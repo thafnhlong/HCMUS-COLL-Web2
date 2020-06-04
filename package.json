@@ -1,0 +1,31 @@
+{
+  "name": "ltweb2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thafnhlong/LTWEB2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thafnhlong/LTWEB2/issues"
+  },
+  "homepage": "https://github.com/thafnhlong/LTWEB2#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "express-handlebars": "^4.0.3",
+    "express-handlebars-sections": "^1.0.1",
+    "express-session": "^1.17.1",
+    "moment": "^2.26.0",
+    "mysql": "^2.18.1",
+    "numeral": "^2.0.6"
+  }
+}
