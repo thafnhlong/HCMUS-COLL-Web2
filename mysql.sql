@@ -12,9 +12,11 @@ CREATE TABLE `account` (
   `email` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `dob` date NOT NULL,
   `pseudonym` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `expired` datetime DEFAULT NULL,
   `password` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `permisson` tinyint(4) NOT NULL,
+  `verifycode` int(6) DEFAULT NULL,
+  `expired` datetime DEFAULT NULL,
+  `expiredcode` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -49,23 +51,26 @@ CREATE TABLE `manage` (
   `uid` int(11) NOT NULL,
   `cid` int(11) NOT NULL,
   PRIMARY KEY (`uid`,`cid`),
+  KEY `manage_ibfk_2` (`cid`),
   CONSTRAINT `manage_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `manage_ibfk_2` FOREIGN KEY (`uid`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `manage_ibfk_2` FOREIGN KEY (`cid`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 DROP TABLE IF EXISTS `post`;
 CREATE TABLE `post` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `title` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `postdate` datetime NOT NULL,
-  `premium` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `status` tinytext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `abstract` text COLLATE utf8_unicode_ci NOT NULL,
+  `premium` tinyint(4) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `postdate` datetime DEFAULT NULL,
   `reason` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `writeby` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `post_ibfk_1` (`writeby`),
+  FULLTEXT KEY `title_content_abstract` (`title`,`content`,`abstract`),
   CONSTRAINT `post_ibfk_1` FOREIGN KEY (`writeby`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -100,4 +105,4 @@ CREATE TABLE `tag` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
--- 2020-06-07 07:40:49
+-- 2020-06-09 08:40:48
