@@ -1,10 +1,14 @@
 {
   "mysql": {
-    "host": "remotemysql.com",
+    "host": "den1.mysql6.gear.host",
     "port": 3306,
-    "user": "ezV9a2M3v4",
-    "password": "LXKOJIXUz2",
-    "database": "ezV9a2M3v4",
+    "user": "ltw2remote",
+    "password": "long1@",
+    "database": "ltw2remote",
     "connectionLimit": 50
+  },
+  "site":{
+    "port": 3000,
+    "url": "http://localhost:3000"
   }
 }
