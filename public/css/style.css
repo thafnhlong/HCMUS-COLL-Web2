@@ -94,6 +94,7 @@
 }
 .title-angle-shap{
   padding-left:20px;
+  text-transform: uppercase;
 }
 .title-angle-shap::before,.title-angle-shap::after{
   position: absolute;

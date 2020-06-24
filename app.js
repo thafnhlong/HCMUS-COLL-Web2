@@ -16,9 +16,8 @@ require('./middlewares/session.mdw')(app);
 
 app.use('/dashboard',require('./routes/dashboard'))
 
-app.get('/', function (req, res) {
-  res.render('home');
-})
+app.use('/',require('./routes/home'))
+app.use('/search',require('./routes/search'))
 
 app.use(function (req, res) {
   res.status(404).render('404');

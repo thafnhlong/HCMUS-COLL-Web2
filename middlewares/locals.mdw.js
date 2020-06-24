@@ -1,23 +1,8 @@
-const LRU = require('lru-cache');
 const categoryModel = require('../models/category.model');
-const postModel = require('../models/post.model');
-
-const cache = new LRU({
-  max: 500,
-  maxAge: 1000 * 60
-})
-
-/*
-mostOutstanding.forEach(x=>{
-tagIdlist=x.tids.split(',')
-tagNamelist= x.tnames.split(',')
-x.tag = tagIdlist.map((x,i)=> {
-  return {id: x,name: tagNamelist[i]}
-})
-})
-*/
+const cache = require('../utils/cache');
 
 module.exports = function (app) {
+  
   app.use(async function (req, res, next) {
     if (req.url.startsWith('/dashboard'))
       return next()
@@ -51,20 +36,5 @@ module.exports = function (app) {
     
     next()
   })
-  
-  app.use('/', async function (req, res, next) {
-    if (req.url == '/') {
-      const Home_List = 'homePostList'
-      var data = cache.get(Home_List);
-      if (!data) {
-        const mostOutstanding = await postModel.mostOutstanding()        
-        data= {mostOutstanding}      
-        cache.set(Home_List,data);
-      }
-      res.locals.homePostList = data
-    }
-    next()
-  })
-
   
 }

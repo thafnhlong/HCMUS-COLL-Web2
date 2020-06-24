@@ -1,0 +1,50 @@
+{{#section 'title'}}{{data.title}}{{/section}}
+
+{{#section 'keyword'}}{{data.keyword}}{{/section}}
+
+<div class='pt-3'>
+  <h4 class="block-title"> <span class="title-angle-shap"> {{data.header}} </span></h4>
+  {{#each data.list}}
+  <div class="row py-4">
+    <div class='col-4'>
+      <a href='/post/{{id}}'>
+        <img class="img-fluid rounded" src="http://demo.themewinter.com/wp/digiqole/covid-19/wp-content/uploads/sites/4/2020/04/image5.jpg" alt=" The mental toll on health care workers infection rate rises">
+      </a>
+    </div>
+    <div class='col-8'>
+      <div class='list-post'>
+        {{#if premium}}<a class="post-cat" style="background-color:#ff0000;color:#ffffff"> Premium </a> {{/if}}
+        <a class="post-cat" href="/category/{{cid}}" style="background-color:#38a3d7;color:#ffffff"> {{cname}} </a>
+        
+        <h2 class="post-title md"> <a href="/post/{{id}}">{{title}}</a></h2>
+        
+        <div class="post-meta"> <span class="post-author"><i class="fa fa-user"></i> {{uname}}</span><span class="post-meta-date"> <i class="fa fa-clock-o"></i> April 30, 2020</span></div>
+        
+        <p>{{abstract}} […]<a class="readmore-btn" href="/post/{{id}}">Đọc thêm <i class="fa fa-arrow-right" aria-hidden="true"> </i></a></p>
+        
+      </div>
+      
+    </div>
+    <div class='col-12 list-post'>Tags: 
+      {{#each tag}}
+      <a class="post-cat" href="/tag/{{id}}" style=" background-color:#00000060;color:#ffffff ">{{name}}</a>
+      {{/each}}
+    </div>
+  </div>
+  {{/each}}
+  <nav>
+    <ul class="pagination justify-content-center list-page">
+      <li class="page-item disabled">
+        <a class="page-link rounded" href="#" tabindex="-1"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+      </li>
+      <li class="page-item"><a class="page-link rounded" href="#">1</a></li>
+      <li class="page-item active">
+        <a class="page-link rounded" href="#">2 <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="page-item"><a class="page-link rounded" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link rounded" href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+      </li>
+    </ul>
+  </nav>
+</div>    
