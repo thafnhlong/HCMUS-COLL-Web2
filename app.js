@@ -18,6 +18,7 @@ app.use('/dashboard',require('./routes/dashboard.route'))
 
 app.use('/',require('./routes/home.route'))
 app.use('/search',require('./routes/search.route'))
+app.use('/post',require('./routes/post.route'))
 
 app.use(function (req, res) {
   res.status(404).render('404');

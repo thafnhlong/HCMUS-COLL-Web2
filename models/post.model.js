@@ -8,6 +8,10 @@ const TBL_TAG = 'tag';
 const TBL_COMMENT = 'comment';
 
 module.exports = {
+  singleDetail: (pid)=>{
+    return 1
+  }
+  ,
   mostOutstanding: ()=> {     
     return db.load(`select p.id, p.premium, p.title,p.views,p.postdate, a.pseudonym uname, c.id cid, c.name cname
 from ${TBL_POST} p join ${TBL_ACCOUNT} a on p.writeby = a.id
