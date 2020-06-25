@@ -8,9 +8,13 @@ router.get('/:keyword/:page', async function (req, res) {
   
   const keyword = req.params.keyword
   
-  const rows = await postModel.searchFTS(keyword)
-
+  var rows = await postModel.searchFTS(keyword)
+  
   rows.forEach(x=>{
+    if (x.tids === null) {
+      x.tag = []
+      return
+    }
     tagIdlist=x.tids.split(',')
     tagNamelist= x.tnames.split(',')
     x.tag = tagIdlist.map((x,i)=> {
@@ -22,6 +26,7 @@ router.get('/:keyword/:page', async function (req, res) {
     title: `${keyword} - Tìm kiếm`,
     header: `Tìm kiếm: ${keyword}`,
     list: rows,
+    count: rows.length,
     keyword
   }
   res.render('list',{data});

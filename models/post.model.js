@@ -57,6 +57,7 @@ from ${TBL_POST} p join ${TBL_ACCOUNT} a on p.writeby = a.id
     join ${TBL_CATEGORY} c on p.cid = c.id
     left join ${TBL_POST_TAG} pt on p.id=pt.pid left join ${TBL_TAG} t on pt.tid = t.id
 where c.id = ${cid}
+group by p.id
     `)
   },
   
@@ -66,7 +67,8 @@ select p.id, p.title, p.abstract, p.premium ,p.postdate, a.pseudonym uname, c.id
 from ${TBL_POST} p join ${TBL_ACCOUNT} a on p.writeby = a.id
     join ${TBL_CATEGORY} c on p.cid = c.id
     left join ${TBL_POST_TAG} pt on p.id=pt.pid left join ${TBL_TAG} t on pt.tid = t.id
-where MATCH(p.title, p.content, p.abstract) AGAINST('${str}' IN NATURAL LANGUAGE MODE)    
+where MATCH(p.title, p.content, p.abstract) AGAINST('${str}' IN NATURAL LANGUAGE MODE) 
+group by p.id   
     `)
   }
 };
