@@ -10,7 +10,7 @@ router.get('/',(req,res) => {
   res.redirect('/dashboard/account/edit')
 })
 
-router.use('/account',require('./_account'))
+router.use('/account',require('./_account.route'))
 
 
 router.use(function (req, res) {

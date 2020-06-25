@@ -14,10 +14,10 @@ require('./middlewares/locals.mdw')(app);
 require('./middlewares/view.mdw')(app);
 require('./middlewares/session.mdw')(app);
 
-app.use('/dashboard',require('./routes/dashboard'))
+app.use('/dashboard',require('./routes/dashboard.route'))
 
-app.use('/',require('./routes/home'))
-app.use('/search',require('./routes/search'))
+app.use('/',require('./routes/home.route'))
+app.use('/search',require('./routes/search.route'))
 
 app.use(function (req, res) {
   res.status(404).render('404');
