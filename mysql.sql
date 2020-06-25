@@ -7,7 +7,7 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
 DROP TABLE IF EXISTS `account`;
 CREATE TABLE `account` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `dob` date NOT NULL,
@@ -26,7 +26,7 @@ INSERT INTO `account` (`id`, `name`, `email`, `dob`, `pseudonym`, `password`, `p
 
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `parent` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -90,7 +90,7 @@ INSERT INTO `comment` (`uid`, `pid`, `time`, `content`) VALUES
 
 DROP TABLE IF EXISTS `manage`;
 CREATE TABLE `manage` (
-  `uid` int(11) NOT NULL,
+  `uid` int(11) NOT NULL AUTO_INCREMENT,
   `cid` int(11) NOT NULL,
   PRIMARY KEY (`uid`,`cid`),
   KEY `cid` (`cid`),
@@ -102,7 +102,7 @@ CREATE TABLE `manage` (
 
 DROP TABLE IF EXISTS `post`;
 CREATE TABLE `post` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` text COLLATE utf8_unicode_ci NOT NULL,
   `content` text COLLATE utf8_unicode_ci NOT NULL,
   `abstract` text COLLATE utf8_unicode_ci NOT NULL,
@@ -142,7 +142,7 @@ INSERT INTO `post_tag` (`pid`, `tid`) VALUES
 
 DROP TABLE IF EXISTS `tag`;
 CREATE TABLE `tag` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

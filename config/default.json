@@ -5,7 +5,8 @@
     "user": "ltw2remote",
     "password": "long1@",
     "database": "ltw2remote",
-    "connectionLimit": 50
+    "connectionLimit": 50,
+    "timezone": "Z"
   },
   "site":{
     "port": 3000,

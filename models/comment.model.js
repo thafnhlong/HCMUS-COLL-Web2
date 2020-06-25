@@ -1,4 +1,5 @@
 const db = require('../utils/db');
+const moment = require('moment')
 
 const TBL_POST = 'post';
 const TBL_ACCOUNT = 'account';
@@ -7,7 +8,7 @@ const TBL_COMMENT = 'comment';
 module.exports = {
     add :async (uid,pid,content)=>{
         return db.add(TBL_COMMENT,{
-            uid,pid,content
+            uid,pid,content,time: new Date()
         })
     },
     load: async(pid)=>{

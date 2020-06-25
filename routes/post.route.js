@@ -4,12 +4,28 @@ const postModel = require('../models/post.model');
 const commentModel = require('../models/comment.model');
 
 
-router.get('/:id', async function (req, res) {
+router.get('/:id', async function (req, res, next) {
   const id = req.params.id
-  const cmtrows = await commentModel.load(id)
 
+  const [detail,cmtrows] = await Promise.all([postModel.singleDetail(id),commentModel.load(id)])
+  
+  const x = detail[0]
+  if (x === undefined)
+    return next()
+  if (x.tids === null)
+    x.tag = []
+  else {
+    const tagIdlist=x.tids.split(',')
+    const tagNamelist= x.tnames.split(',')
+    x.tag = tagIdlist.map((x,i)=> {
+      return {id: x,name: tagNamelist[i]}
+    })
+  }
+  
   res.render('vwPost/detail',{
-      cmtrows
+      detail: x,
+      cmtrows,
+      cmtrowslenght: cmtrows.length
   })
 })
 

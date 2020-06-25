@@ -3,7 +3,7 @@
 {{#section 'keyword'}}{{data.keyword}}{{/section}}
 
 <div class='pt-3'>
-  <h4 class="block-title"> <span class="title-angle-shap"> {{data.header}} ({{data.count}} KẾT QUẢ) </span></h4>
+  <h4 class="block-title"> <span class="title-angle-shap"> {{data.header}} {{#if data.keyword}}({{data.count}} KẾT QUẢ){{/if}} </span></h4>
   {{#each data.list}}
   <div class="row py-4">
     <div class='col-4'>
@@ -18,7 +18,7 @@
         
         <h2 class="post-title md"> <a href="/post/{{id}}">{{title}}</a></h2>
         
-        <div class="post-meta"> <span class="post-author"><i class="fa fa-user"></i> {{uname}}</span><span class="post-meta-date"> <i class="fa fa-clock-o"></i> April 30, 2020</span></div>
+        <div class="post-meta"> <span class="post-author"><i class="fa fa-user"></i> {{uname}}</span><span class="post-meta-date"> <i class="fa fa-clock-o"></i> {{getllDate postdate}}</span></div>
         
         <p>{{abstract}} […]<a class="readmore-btn" href="/post/{{id}}">Đọc thêm <i class="fa fa-arrow-right" aria-hidden="true"> </i></a></p>
         

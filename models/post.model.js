@@ -9,7 +9,14 @@ const TBL_COMMENT = 'comment';
 
 module.exports = {
   singleDetail: (pid)=>{
-    return 1
+    return db.load(`
+select p.title, p.content, p.premium ,p.postdate, p.views, a.pseudonym uname, c.id cid, c.name cname, GROUP_CONCAT(t.id) tids, GROUP_CONCAT(t.name) tnames
+from ${TBL_POST} p join ${TBL_ACCOUNT} a on p.writeby = a.id
+    join ${TBL_CATEGORY} c on p.cid = c.id
+    left join ${TBL_POST_TAG} pt on p.id=pt.pid left join ${TBL_TAG} t on pt.tid = t.id 
+where p.id = ${pid}
+group by p.id   
+    `)
   }
   ,
   mostOutstanding: ()=> {     
@@ -56,11 +63,26 @@ limit 10
   
   getByCat: (cid) => {
     return db.load(`
-select p.id, p.title, p.abstract, p.postdate, a.pseudonym uname, c.id cid, c.name cname, GROUP_CONCAT(t.id) tids, GROUP_CONCAT(t.name) tnames
+select p.id, p.title, p.abstract, p.premium, p.postdate, a.pseudonym uname, c.id cid, c.name cname, GROUP_CONCAT(t.id) tids, GROUP_CONCAT(t.name) tnames
 from ${TBL_POST} p join ${TBL_ACCOUNT} a on p.writeby = a.id
-    join ${TBL_CATEGORY} c on p.cid = c.id
+    right join ${TBL_CATEGORY} c on p.cid = c.id
     left join ${TBL_POST_TAG} pt on p.id=pt.pid left join ${TBL_TAG} t on pt.tid = t.id
 where c.id = ${cid}
+group by p.id
+    `)
+  },
+  
+  getByTag: (tid) => {
+    return db.load(`
+select p.id, p.title, p.abstract, p.premium, p.postdate, a.pseudonym uname, c.id cid, c.name cname, GROUP_CONCAT(t.id) tids, GROUP_CONCAT(t.name) tnames, data.name tagname
+from post p join account a on p.writeby = a.id
+    join category c on p.cid = c.id
+    left join post_tag pt on p.id=pt.pid left join tag t on pt.tid = t.id 
+RIGHT JOIN ( 
+select t.id,t.name, pt.pid
+from tag t left join post_tag pt on t.id = pt.tid
+where t.id=${tid}
+) data on data.pid = p.id
 group by p.id
     `)
   },

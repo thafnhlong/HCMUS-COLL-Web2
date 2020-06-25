@@ -140,7 +140,7 @@
   -moz-transition: all 0.4s ease;
   -ms-transition: all 0.4s ease;
 }
-.item a{
+.item a,.post-meta a.post-cat{
   text-decoration: none;
 }
 .item-before::before{

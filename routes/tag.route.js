@@ -8,10 +8,10 @@ router.get('/:id/:page', async function (req, res, next) {
   
   const id = req.params.id
   
-  var rows = await postModel.getByCat(id)
+  var rows = await postModel.getByTag(id)
   if (rows.length ===0 )
     return next()
-  const catName = rows[0].cname
+  const tagName = rows[0].tagname
   
   if (rows[0].id === null)
     rows=[]
@@ -30,15 +30,15 @@ router.get('/:id/:page', async function (req, res, next) {
   }
   
   data = {
-    title: `${catName}`,
-    header: `Chuyên mục: ${catName}`,
+    title: `${tagName}`,
+    header: `Nhãn: ${tagName}`,
     list: rows,
   }
   res.render('list',{data});
 })
 router.get('/:id', function (req, res, next) {
   if (req.params.id)
-    return res.redirect(`/category/${req.params.id}/1`)
+    return res.redirect(`/tag/${req.params.id}/1`)
   
   next()
 })
