@@ -37,5 +37,8 @@ $(document).ready(function(){
       }
     }
   })
-  
+  if (window.location.hash.substr(1) == 'news'){
+    window.scrollTo(0,document.body.scrollHeight);
+    console.log('scroll')
+  }
 });

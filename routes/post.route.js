@@ -33,7 +33,9 @@ router.post('/:id',async function(req,res){
     const uid = 1
     const pid = req.params.id
     await commentModel.add(uid,pid,req.body.content)
-    res.redirect('back')
+    
+    backURL=req.header('Referer') || '/';
+    res.redirect(backURL+'#news')
 })
 
 module.exports = router
