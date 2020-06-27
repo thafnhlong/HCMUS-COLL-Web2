@@ -4,6 +4,7 @@ const config = require('../config/default.json');
 const pool = mysql.createPool(config.mysql);
 
 module.exports = {
+  escape: pool.escape.bind(pool),
   load: function (sql) {
     return new Promise(function (resolve, reject) {
       pool.query(sql, function (error, results, fields) {
