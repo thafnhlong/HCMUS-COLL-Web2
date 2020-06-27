@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 router.use(async function (req, res, next) {
+  if (!res.locals.user)
+    return res.redirect('/account')
+  
   res.locals.layout = '_main'
   next()
 })

@@ -6,6 +6,17 @@ const sendmail = require('../utils/sendmail');
 const bcrypt = require('bcryptjs');
 const moment = require('moment')
 
+router.get('/logout', (req, res) => { 
+  req.session.user = null
+  res.redirect('/') 
+})
+
+router.use((req,res,next)=>{
+  if (req.session.user)
+    return res.redirect('/')
+  next()
+})
+
 router.get('/', (req, res) => { res.redirect('/account/login') })
 
 router.get('/login', async function (req, res) {
@@ -32,8 +43,12 @@ router.post('/login', async function (req, res) {
             err: 'Mật khẩu không đúng'
         })
     }
+    req.session.user = user
     res.redirect('/')
 })
+
+router.use('/auth/facebook', require('./social/facebook'))
+router.use('/auth/google', require('./social/google'))
 
 router.get('/register', async function (req, res) {
     res.render('vwAccount/register', { layout: false })
@@ -43,7 +58,6 @@ router.post('/register', async function (req, res) {
 
     const user = await accountModel.singleByEmail(req.body.email);
     const Age = moment() - moment(req.body.dob, 'DD/MM/YYYY')
-    console.log(Age)
     if (user) {
         res.render('vwAccount/register', {
             layout: false,
@@ -93,16 +107,14 @@ router.post('/register', async function (req, res) {
         }
 
         await accountModel.add(account);
-        res.redirect('/account/login')
+        res.redirect('/account')
     };
 
 })
 
-
 router.get('/forgot-password', async function (req, res) {
     res.render('vwAccount/forgot-password', { layout: false })
 })
-
 router.post('/forgot-password', async function (req, res) {
     if (req.body.email === '') {
         return res.render('vwAccount/forgot-password', {
@@ -147,13 +159,12 @@ router.get('/reset-password', async function (req, res) {
     if (code) {
         const account = await accountModel.singleByCode(code);
         if (account === null) {
-            return res.redirect('/account/login')
+            return res.redirect('/account')
         }
         return res.render('vwAccount/reset-password', { layout: false })
     }
-    res.redirect('/account/login')
+    res.redirect('/account')
 })
-
 router.post('/reset-password', async function (req, res) {
     const code = req.query.code;
     if (code) {
@@ -180,9 +191,7 @@ router.post('/reset-password', async function (req, res) {
         account.expiredcode = null
         await accountModel.patch(account);
     }
-    res.redirect('/account/login')
+    res.redirect('/account')
 })
-
-
 
 module.exports = router

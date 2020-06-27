@@ -10,9 +10,9 @@ app.use(express.urlencoded({
 
 app.use('/public', express.static('public'));
 
-require('./middlewares/locals.mdw')(app);
 require('./middlewares/view.mdw')(app);
 require('./middlewares/session.mdw')(app);
+require('./middlewares/locals.mdw')(app);
 
 app.use('/dashboard',require('./routes/dashboard.route'))
 

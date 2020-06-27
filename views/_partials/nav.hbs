@@ -27,7 +27,7 @@
     </form>
     <ul class="navbar-nav mt-2 mt-lg-0">
       <li class="nav-item">
-        <a class="nav-link" href="/account">
+        <a class="nav-link" href="{{#if user}}/dashboard{{else}}/account{{/if}}">
           <i class="fa fa-user" aria-hidden="true"></i>
           Tài khoản
         </a>
