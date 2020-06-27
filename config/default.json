@@ -11,5 +11,12 @@
   "site":{
     "port": 3000,
     "url": "http://localhost:3000"
+  },
+  "nodemailer":{
+    "user":"ltw2nodejs@gmail.com",
+    "password":"12344321qQq"
+  },
+  "authentication": {
+    "saltRounds": 8
   }
 }

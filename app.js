@@ -22,6 +22,8 @@ app.use('/category',require('./routes/category.route'))
 app.use('/tag',require('./routes/tag.route'))
 app.use('/post',require('./routes/post.route'))
 
+app.use('/account',require('./routes/account.route'))
+
 app.use(function (req, res) {
   res.status(404).render('404');
 })
