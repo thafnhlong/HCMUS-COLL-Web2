@@ -10,9 +10,27 @@ router.use(async function (req, res, next) {
 })
 
 router.get('/',(req,res) => {
-  res.redirect('/dashboard/account/edit')
+  res.redirect('/dashboard/profile/edit')
 })
 
+router.get('/:type/:option',(req,res,next) => {
+  res.locals.navOption = {
+    type: req.params.type,
+    option: req.params.option
+  }
+  next()
+})
+
+
+router.use('/profile',require('./_profile.route'))
+//writer
+
+//editor
+
+//admin
+router.use(async function (req, res, next) {
+  next()
+})
 router.use('/account',require('./_account.route'))
 
 

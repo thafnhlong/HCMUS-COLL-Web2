@@ -11,7 +11,7 @@
         {{/if}}
         <a class="post-cat" href="/category/{{detail.cid}}" style="background-color:#38a3d7;color:#ffffff"> {{detail.cname}} </a> </li>
       <li class="post-author"><img src="https://img.icons8.com/cute-clipart/64/000000/user-male.png" class="rounded-circle" height="55" width="55"> <strong>{{detail.uname}}</strong></li>
-      <li class="post-meta-date"> <i class="fa fa-clock-o"></i> {{getlllDate detail.postdate}}</li>
+      <li class="post-meta-date"> <i class="fa fa-clock-o"></i> {{formatDate detail.postdate 'lll' }}</li>
       <li class="post-comment"><i class="fa fa-comments"></i> {{cmtrowslenght}}</li>
       <li><i class="fa fa-tripadvisor" aria-hidden="true"></i> {{detail.views}}</li>
     </ul>
@@ -142,7 +142,7 @@
           <div class="meta-data">
             <strong>{{name}} </strong>
             <div class="comment-date">
-              {{getlllDate time}} </div>
+              {{formatDate time 'lll'}} </div>
           </div>
           <div class="comment-content mt-3">
             <p>{{content}}</p>

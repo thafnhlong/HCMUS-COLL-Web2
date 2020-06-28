@@ -10,8 +10,18 @@ module.exports = function (app) {
     extname: '.hbs',
     helpers: {
       section: hbs_sections(),
-      getllDate: (date)=>{ return moment(date).format('ll')},
-      getlllDate: (date)=>{ return moment(date).format('lll')},
+      isEqual: (a,b) => a==b,
+      formatDate: (date,format) => {return moment(date).format(format)},
+      parseSection: (type,option,object) => {
+        const navOption = object.data.root._locals.navOption
+        if (!navOption) return false
+        if (type == navOption.type){
+          if (option && option != navOption.option)
+            return false
+          return true
+        }
+        return false
+      },
     }
   }));
   app.set('view engine', 'hbs');

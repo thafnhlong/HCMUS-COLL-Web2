@@ -1,0 +1,122 @@
+{{#section 'title'}}Chỉnh sửa thông tin cá nhân{{/section}}
+{{#section 'css'}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" />
+{{/section}}
+
+<!-- Page Heading -->
+<h1 class="h3 mb-4 text-gray-800">Chinh sua thong tin ca nhan</h1>
+
+<div class="row">
+
+  <div class="col-lg-6">
+
+    <!-- Circle Buttons -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Tai khoan</h6>
+      </div>
+      <form method='post' class="form" action='./update'>
+        <div class="card-body">
+          {{#if (isEqual user.permisson 1)}}
+          <div class="form-group"><label>Loai tai khoan: </label>
+            {{#if user.premium}}
+            <span class="badge badge-success">Premium</span> ({{formatDate user.expired 'HH:mm DD/MM/YYYY' }})
+            {{else}}
+            <span class="badge badge-danger">Normal</span>
+            {{/if}}
+          </div>
+          {{/if}}
+          <div class="form-group">
+            <label>Ho ten</label>
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-address-book" aria-hidden="true"></i></span></div>
+              <input name='name' type="text" class="form-control" placeholder="Ho va ten" value='{{user.name}}' />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i></span></div>
+              <input readonly class="form-control" placeholder="Email" value='{{user.email}}' />
+            </div>
+            <span class="form-text text-muted">Chung toi se khong chia se email cua ban cho ai khac</span>
+          </div>
+          {{#if (isEqual user.permisson 2)}}
+          <div class="form-group">
+            <label>But danh</label>
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-edit" aria-hidden="true"></i></span></div>
+              <input name='pseudonym' type="text" placeholder="But danh" class="form-control" value='{{user.pseudonym}}'/>
+            </div>
+          </div>
+          {{/if}}
+          <div class="form-group mb-2">
+            <label>Ngay sinh</label>
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-birthday-cake" aria-hidden="true"></i></span></div>
+              <input name='dob' id='datetimepicker' type="text" class="form-control" value='{{formatDate user.dob 'DD/MM/YYYY'}}' />
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button type="submit" class="btn btn-primary mr-2">Cap nhat</button>
+          <button type="reset" class="btn btn-secondary">Cancel</button>
+        </div>
+      </form>
+      <!--end::Form-->
+    </div>
+
+  </div>
+
+  <div class="col-lg-6">
+
+    <!-- Circle Buttons -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Doi mat khau</h6>
+      </div>
+      <form method='post' class="form" action='./pass'>
+        <div class="card-body">
+          <div class="form-group">
+            <label>Mat khau cu</label>
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></span></div>
+              <input name='password' type="password" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Mat khau moi</label>
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-key" aria-hidden="true"></i></span></div>
+              <input name='newpassword' type="password" class="form-control" />
+            </div>
+          </div>
+          <div class="form-group mb-2">
+            <label>Nhap lai mat khau</label>
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-key" aria-hidden="true"></i></span></div>
+              <input type="password" class="form-control" />
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button type="submit" class="btn btn-primary mr-2">Cap nhat</button>
+        </div>
+      </form>
+      <!--end::Form-->
+    </div>
+
+  </div>
+
+</div>
+
+{{#section 'js'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.0/jquery.datetimepicker.full.js"></script>
+<script>
+  jQuery('#datetimepicker').datetimepicker({
+    timepicker:false,
+    format:'d/m/Y',
+    mask: true
+  });
+</script>
+{{/section}}

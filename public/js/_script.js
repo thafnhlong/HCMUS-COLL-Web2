@@ -26,4 +26,7 @@
         }, 1e3, "easeInOutExpo"),
         o.preventDefault()
     })
+    if (window.location.hash.substr(1).startsWith('error:')){
+      alert(decodeURIComponent(window.location.hash.substr(7)))
+    }
 }(jQuery);

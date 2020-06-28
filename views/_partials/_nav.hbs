@@ -1,7 +1,7 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard">
       <div class="sidebar-brand-icon rotate-n-15">
         <i class="fa fa-2x fa-globe" aria-hidden="true"></i>
       </div>
@@ -12,13 +12,63 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Tables -->
-    <li class="nav-item active">
-      <a class="nav-link" href="tables.html">
+    <li class="nav-item {{#if (parseSection 'profile' 0)}}active{{/if}}">
+      <a class="nav-link" href="/dashboard">
         <i class="fa fa-users" aria-hidden="true"></i>
         <span>Thong tin ca nhan</span></a>
     </li>
-    
     <hr class="sidebar-divider">
+    
+    {{#if (isEqual user.permisson 1)}}
+    <div class="sidebar-heading">
+      Premium
+    </div>
+    {{else if (isEqual user.permisson 2)}}
+    <div class="sidebar-heading">
+      Bai viet
+    </div>
+    
+    <li class="nav-item">
+      <a class="nav-link" href="tables.html">
+        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+        <span>Dang bai viet</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+        <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+        <span>Danh sach bai viet</span>
+      </a>
+      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <h6 class="collapse-header">Loai bai viet:</h6>
+          <a class="collapse-item active" href="buttons.html">Da duyet</a>
+          <a class="collapse-item" href="cards.html">Chua duyet</a>
+          <a class="collapse-item" href="cards.html">Bi tu choi</a>
+        </div>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link">
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+        <span>chinh sua bai viet</span></a>
+    </li>
+    {{else if (isEqual user.permisson 3)}}
+    <div class="sidebar-heading">
+      Bai viet
+    </div>
+    
+    <li class="nav-item">
+      <a class="nav-link">
+        <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+        <span>Danh sach bai viet</span></a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link">
+        <i class="fa fa-pencil" aria-hidden="true"></i>
+        <span>chinh sua bai viet</span></a>
+    </li>
+    
+    {{else}}
     <div class="sidebar-heading">
       Quan ly
     </div>
@@ -65,20 +115,22 @@
         </div>
       </div>
     </li>
-    <li class="nav-item">
+    <li class="nav-item {{#if (parseSection 'account' 0)}}active{{/if}}">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAccount" aria-expanded="false" aria-controls="collapseAccount">
         <i class="fa fa-newspaper-o" aria-hidden="true"></i>
         <span>Tai khoan</span>
       </a>
-      <div id="collapseAccount" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
+      <div id="collapseAccount" class="collapse {{#if (parseSection 'account' 0)}}show{{/if}}" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Thao tac  :</h6>
-          <a class="collapse-item active" href="buttons.html">Them</a>
-          <a class="collapse-item" href="cards.html">Danh sach</a>
-          <a class="collapse-item" href="cards.html">Chinh sua</a>
+          <a class="collapse-item {{#if (parseSection 'account' 'add')}}active{{/if}}" href="buttons.html">Them</a>
+          <a class="collapse-item {{#if (parseSection 'account' 'list')}}active{{/if}}" href="cards.html">Danh sach</a>
+          <a class="collapse-item {{#if (parseSection 'account' 'edit')}}active{{/if}}" href="cards.html">Chinh sua</a>
         </div>
       </div>
     </li>
+    
+    {{/if}}
     
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

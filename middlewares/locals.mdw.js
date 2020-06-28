@@ -41,6 +41,7 @@ module.exports = function (app) {
   })
   
   app.use(async function (req, res, next) {
+    
     const loginUser = req.session.user
     if (loginUser){
       if (loginUser.cacheExpired === undefined)
@@ -48,7 +49,11 @@ module.exports = function (app) {
       else if (new Date(loginUser.cacheExpired) < new Date())
         req.session.user = await accountModel.singleByEmail(loginUser.email)
       
-      res.locals.user = req.session.user
+      const curUser = req.session.user
+      if (moment(curUser.expired)> moment())
+        curUser.premium = true
+      
+      res.locals.user = curUser
     }
     next()
   })
