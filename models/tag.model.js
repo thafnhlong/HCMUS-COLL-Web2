@@ -14,12 +14,12 @@ module.exports = {
     return db.patch(TBL_TAG,entity,{id})
   },
   loadById: (id) => {
-    return db.load(`select * from tag where id=${id}`)
+    return db.load(`select * from ${TBL_TAG} where id=${id}`)
   },
   loadByPage: (offset)=>{
-    return db.load(`select * from tag limit ${config.pagination} offset ${offset}`)
+    return db.load(`select * from ${TBL_TAG} limit ${config.pagination} offset ${offset}`)
   },
   count: ()=>{
-    return db.load(`select count(*) count from tag`)
+    return db.load(`select count(*) count from ${TBL_TAG}`)
   }
 }
