@@ -18,5 +18,6 @@
   },
   "authentication": {
     "saltRounds": 8
-  }
+  },
+  "pagination": 6
 }

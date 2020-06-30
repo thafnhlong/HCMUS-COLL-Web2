@@ -14,7 +14,7 @@
     <!-- Nav Item - Tables -->
     <li class="nav-item {{#if (parseSection 'profile' 0)}}active{{/if}}">
       <a class="nav-link" href="/dashboard">
-        <i class="fa fa-users" aria-hidden="true"></i>
+        <i class="fa fa-user" aria-hidden="true"></i>
         <span>Thong tin ca nhan</span></a>
     </li>
     <hr class="sidebar-divider">
@@ -73,59 +73,67 @@
       Quan ly
     </div>
     
-    <li class="nav-item">
-      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTag" aria-expanded="false" aria-controls="collapseTag">
-        <i class="fa fa-newspaper-o" aria-hidden="true"></i>
-        <span>Tu khoa (Tag)</span>
-      </a>
-      <div id="collapseTag" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
-        <div class="bg-white py-2 collapse-inner rounded">
-          <h6 class="collapse-header">Thao tac  :</h6>
-          <a class="collapse-item active" href="buttons.html">Them</a>
-          <a class="collapse-item" href="cards.html">Danh sach</a>
-          <a class="collapse-item" href="cards.html">Chinh sua</a>
-        </div>
-      </div>
-    </li>
-    <li class="nav-item">
+    <li class="nav-item {{#if (parseSection 'category' 0)}}active{{/if}}">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCategory" aria-expanded="false" aria-controls="collapseCategory">
-        <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+        <i class="fa fa-calendar-o" aria-hidden="true"></i>
         <span>Chuyen muc</span>
       </a>
-      <div id="collapseCategory" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
+      <div id="collapseCategory" class="collapse {{#if (parseSection 'category' 0)}}show{{/if}}" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Thao tac  :</h6>
-          <a class="collapse-item active" href="buttons.html">Them</a>
-          <a class="collapse-item" href="cards.html">Danh sach</a>
-          <a class="collapse-item" href="cards.html">Chinh sua</a>
+          <a class="collapse-item {{#if (parseSection 'category' 'add')}}active{{/if}}" href="/dashboard/category/add">Them</a>
+          <a class="collapse-item {{#if (parseSection 'category' 'list')}}active{{/if}}" href="/dashboard/category/list">Danh sach</a>
+          {{#if (parseSection 'category' 'edit')}}
+          <a class="collapse-item active" href="">Chinh sua</a>
+          {{/if}}
         </div>
       </div>
     </li>
-    <li class="nav-item">
+    <li class="nav-item {{#if (parseSection 'tag' 0)}}active{{/if}}">
+      <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTag" aria-expanded="false" aria-controls="collapseTag">
+        <i class="fa fa-tags" aria-hidden="true"></i>
+        <span>Tu khoa (Tag)</span>
+      </a>
+      <div id="collapseTag" class="collapse {{#if (parseSection 'tag' 0)}}show{{/if}}" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
+        <div class="bg-white py-2 collapse-inner rounded">
+          <h6 class="collapse-header">Thao tac  :</h6>
+          <a class="collapse-item {{#if (parseSection 'tag' 'add')}}active{{/if}}" href="/dashboard/tag/add">Them</a>
+          <a class="collapse-item {{#if (parseSection 'tag' 'list')}}active{{/if}}" href="/dashboard/tag/list">Danh sach</a>
+          {{#if (parseSection 'tag' 'edit')}}
+          <a class="collapse-item active" href="">Chinh sua</a>
+          {{/if}}
+        </div>
+      </div>
+    </li>
+    <li class="nav-item {{#if (parseSection 'post' 0)}}active{{/if}}">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePost" aria-expanded="false" aria-controls="collapsePost">
         <i class="fa fa-newspaper-o" aria-hidden="true"></i>
         <span>Bai viet</span>
       </a>
-      <div id="collapsePost" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
+      <div id="collapsePost" class="collapse {{#if (parseSection 'post' 0)}}show{{/if}}" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Thao tac  :</h6>
-          <a class="collapse-item active" href="buttons.html">Them</a>
-          <a class="collapse-item" href="cards.html">Danh sach</a>
-          <a class="collapse-item" href="cards.html">Chinh sua</a>
+          <a class="collapse-item {{#if (parseSection 'post' 'add')}}active{{/if}}" href="/dashboard/post/add">Them</a>
+          <a class="collapse-item {{#if (parseSection 'post' 'list')}}active{{/if}}" href="/dashboard/post/list">Danh sach</a>
+          {{#if (parseSection 'post' 'edit')}}
+          <a class="collapse-item active" href="">Chinh sua</a>
+          {{/if}}
         </div>
       </div>
     </li>
     <li class="nav-item {{#if (parseSection 'account' 0)}}active{{/if}}">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAccount" aria-expanded="false" aria-controls="collapseAccount">
-        <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+        <i class="fa fa-users" aria-hidden="true"></i>
         <span>Tai khoan</span>
       </a>
       <div id="collapseAccount" class="collapse {{#if (parseSection 'account' 0)}}show{{/if}}" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Thao tac  :</h6>
-          <a class="collapse-item {{#if (parseSection 'account' 'add')}}active{{/if}}" href="buttons.html">Them</a>
-          <a class="collapse-item {{#if (parseSection 'account' 'list')}}active{{/if}}" href="cards.html">Danh sach</a>
-          <a class="collapse-item {{#if (parseSection 'account' 'edit')}}active{{/if}}" href="cards.html">Chinh sua</a>
+          <a class="collapse-item {{#if (parseSection 'account' 'add')}}active{{/if}}" href="/dashboard/account/add">Them</a>
+          <a class="collapse-item {{#if (parseSection 'account' 'list')}}active{{/if}}" href="/dashboard/account/list">Danh sach</a>
+          {{#if (parseSection 'account' 'edit')}}
+          <a class="collapse-item active" href="">Chinh sua</a>
+          {{/if}}
         </div>
       </div>
     </li>

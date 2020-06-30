@@ -13,7 +13,7 @@ router.get('/',(req,res) => {
   res.redirect('/dashboard/profile/edit')
 })
 
-router.get('/:type/:option',(req,res,next) => {
+router.get('/:type/:option*',(req,res,next) => {
   res.locals.navOption = {
     type: req.params.type,
     option: req.params.option
@@ -29,10 +29,14 @@ router.use('/profile',require('./_profile.route'))
 
 //admin
 router.use(async function (req, res, next) {
-  next()
+  if (res.locals.user.permisson == 4)
+    return next()
+  return res.redirect('/dashboard')
 })
+router.use('/category',require('./_category.route'))
+router.use('/tag',require('./_tag.route'))
+router.use('/post',require('./_post.route'))
 router.use('/account',require('./_account.route'))
-
 
 router.use(function (req, res) {
   res.status(404).send('404 not found');

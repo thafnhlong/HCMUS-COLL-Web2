@@ -30,3 +30,12 @@
       alert(decodeURIComponent(window.location.hash.substr(7)))
     }
 }(jQuery);
+
+function deleteFormSubmit(type,id){
+  let result = confirm(`Bạn có muốn xóa ${type} có id: ${id} không?`)
+  if (result){
+    const frm = document.getElementById('frmSend')
+    frm.children[0].value = id
+    frm.submit()
+  }
+}
