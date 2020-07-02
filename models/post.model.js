@@ -124,18 +124,36 @@ where c.id=${cid})
     `)
   },
   
-  getByTag: (tid) => {
+  getByTag: (tid,offset) => {
+    const now = db.escape(new Date())
     return db.load(`
-select p.id, p.title, p.abstract, p.premium, p.postdate, a.pseudonym uname, c.id cid, c.name cname, GROUP_CONCAT(t.id) tids, GROUP_CONCAT(t.name) tnames, data.name tagname
-from post p join account a on p.writeby = a.id
-    join category c on p.cid = c.id
-    left join post_tag pt on p.id=pt.pid left join tag t on pt.tid = t.id 
-RIGHT JOIN ( 
-select t.id,t.name, pt.pid
-from tag t left join post_tag pt on t.id = pt.tid
-where t.id=${tid}
-) data on data.pid = p.id
+select p.id, p.title, p.abstract, p.premium, p.postdate, a.pseudonym uname, c.id cid, c.name cname, GROUP_CONCAT(t.id) tids, GROUP_CONCAT(t.name) tnames
+from ${TBL_POST} p left join ${TBL_POST_TAG} pt on p.id=pt.pid
+    join ${TBL_ACCOUNT} a on p.writeby = a.id 
+    left join ${TBL_CATEGORY} c on p.cid=c.id
+    left join ${TBL_TAG} t on pt.tid = t.id
+where p.status=2 and p.postdate <= ${now} and p.id in 
+
+(select pt.pid
+from ${TBL_TAG} t left join ${TBL_POST_TAG} pt on t.id=pt.tid
+where t.id=${tid})
+
 group by p.id
+order by p.premium desc, p.postdate desc
+limit ${config.pagination} offset ${offset}
+    `)
+  },
+  
+  getByTagCount: (tid) => {
+    const now = db.escape(new Date())
+    return db.load(`
+select count(p.id) count
+from ${TBL_POST} p
+where p.status=2 and p.postdate <= ${now} and p.id in 
+
+(select pt.pid
+from ${TBL_TAG} t left join ${TBL_POST_TAG} pt on t.id=pt.tid
+where t.id=${tid})
     `)
   },
   
