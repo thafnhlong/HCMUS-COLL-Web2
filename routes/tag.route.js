@@ -25,7 +25,7 @@ router.get('/:id/:page', async function (req, res, next) {
     page = +req.params.page
   if (page > maxPage)
     page = +maxPage
-  else if (page < 1)
+  if (page < 1)
     page = 1 
   const pv = page > 1
   const nv = page < maxPage 
