@@ -71,9 +71,9 @@
             <select id='category' class="js-category form-control" style="width:100%">
               {{#each categoryList}}
               <optgroup label="{{name}}">
-                <option {{#if (isEqual ../postData.cid id)}}selected{{/if}} value="{{@index}}">*{{name}}</option>
+                <option {{#if (isEqual ../postData.cid @index)}}selected{{/if}} value="{{@index}}">*{{name}}</option>
                 {{#each group}}
-                <option {{#if (isEqual../../postData.cid id)}}selected{{/if}} value="{{id}}">{{name}}</option>
+                <option {{#if (isEqual ../../postData.cid id)}}selected{{/if}} value="{{id}}">{{name}}</option>
                 {{/each}}
               </optgroup>
               {{/each}}
