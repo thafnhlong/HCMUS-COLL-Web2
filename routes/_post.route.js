@@ -8,7 +8,7 @@ const accountModel = require('../models/account.model')
 const upload = require('../utils/upload')
 
 admin_router.get('/add', async function (req, res) {
-  const [categoryList,tagList,writer] = await Promise.all([
+  const [[categoryList],tagList,writer] = await Promise.all([
     categoryModel.all(),
     tagModel.all(),
     accountModel.getByPermisson(2)
@@ -97,7 +97,7 @@ admin_router.post('/publish', async function (req, res) {
 admin_router.get('/edit/:id', async function (req, res,next) {
   const id = req.params.id
   
-  let [postData,categoryList,tagList,writer] = await Promise.all([
+  let [postData,[categoryList],tagList,writer] = await Promise.all([
     postModel.loadById(id),
     categoryModel.all(),
     tagModel.all(),

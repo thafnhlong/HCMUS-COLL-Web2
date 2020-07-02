@@ -15,14 +15,13 @@ module.exports = function (app) {
     let i = 0;
     if (!data) {
       data = await categoryModel.all()
-      for (var index in data) {
+      for (var index in data[0]) {
         if (++i <= 6)
-          data[index].show = true
+          data[0][index].show = true
       }
       cache.set(Category_List,data);
     }
-    
-    res.locals.categoryList = data
+    res.locals.categoryList = data[0]
     
     next()
   })

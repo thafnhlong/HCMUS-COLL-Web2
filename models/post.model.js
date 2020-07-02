@@ -89,14 +89,38 @@ limit 10
     `)
   },
   
-  getByCat: (cid) => {
+  getByCat: (cid,offset) => {
+    const now = db.escape(new Date())
     return db.load(`
 select p.id, p.title, p.abstract, p.premium, p.postdate, a.pseudonym uname, c.id cid, c.name cname, GROUP_CONCAT(t.id) tids, GROUP_CONCAT(t.name) tnames
-from ${TBL_POST} p join ${TBL_ACCOUNT} a on p.writeby = a.id
-    right join ${TBL_CATEGORY} c on p.cid = c.id
-    left join ${TBL_POST_TAG} pt on p.id=pt.pid left join ${TBL_TAG} t on pt.tid = t.id
-where c.id = ${cid}
+from ${TBL_POST} p left join ${TBL_POST_TAG} pt on p.id=pt.pid
+    join ${TBL_ACCOUNT} a on p.writeby = a.id 
+    left join ${TBL_CATEGORY} c on p.cid=c.id
+    left join ${TBL_TAG} t on pt.tid = t.id
+where p.status=2 and p.postdate <= ${now} and p.id in 
+
+(select distinct p.id
+from ${TBL_CATEGORY} c left join ${TBL_CATEGORY} c2 on c.id = c2.parent
+    join ${TBL_POST} p on (p.cid = c.id or p.cid=c2.id)
+where c.id=${cid})
+
 group by p.id
+order by p.premium desc, p.postdate desc
+limit ${config.pagination} offset ${offset}
+    `)
+  },
+  
+  getByCatCount: (cid) => {
+    const now = db.escape(new Date())
+    return db.load(`
+select count(p.id) count
+from ${TBL_POST} p
+where p.status=2 and p.postdate <= ${now} and p.id in 
+
+(select distinct p.id
+from ${TBL_CATEGORY} c left join ${TBL_CATEGORY} c2 on c.id = c2.parent
+    join ${TBL_POST} p on (p.cid = c.id or p.cid=c2.id)
+where c.id=${cid})
     `)
   },
   

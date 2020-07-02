@@ -7,7 +7,8 @@ module.exports = {
   all: async ()=>{
     const rows = await db.load(`select * from ${TBL_CATEGORY}`)
     let data = []
-    rows.forEach(x=>{
+    rows.forEach(xori=>{
+      const x= Object.assign({}, xori)
       if (x.parent){
         parentId = x.parent
         delete x.parent
@@ -21,7 +22,7 @@ module.exports = {
       else
         data[x.id].name = x.name
     })
-    return data
+    return [data,rows]
   },
   add: (entity)=>{
     return db.add(TBL_CATEGORY,entity)
