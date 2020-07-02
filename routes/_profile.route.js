@@ -8,18 +8,18 @@ const config = require('../config/default.json');
 router.get('/edit', function (req, res) {
   res.render('vwAccount/_profile');
 })
-router.post('/update', function (req, res) {
+router.post('/update', async function (req, res) {
   const entity = {
     id: res.locals.user.id,
     name: req.body.name,
     pseudonym: req.body.pseudonym,
     dob: moment(req.body.dob, 'DD/MM/YYYY').format('YYYY-MM-DD')
   }
-  accountModel.patch(entity)
+  await accountModel.patch(entity)
   req.session.user.cacheExpired = 0
   res.redirect('back')
 })
-router.post('/pass', function (req, res) {
+router.post('/pass', async function (req, res) {
   
   const rs = bcrypt.compareSync(req.body.password, res.locals.user.password);
   if (rs === false) {
@@ -31,7 +31,7 @@ router.post('/pass', function (req, res) {
     id: res.locals.user.id,
     password: password_hash
   }
-  accountModel.patch(entity)
+  await accountModel.patch(entity)
   res.redirect('back')
 })
 

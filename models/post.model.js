@@ -1,5 +1,7 @@
 const db = require('../utils/db');
 
+const config = require('../config/default.json')
+
 const TBL_POST = 'post';
 const TBL_ACCOUNT = 'account';
 const TBL_CATEGORY = 'category';
@@ -8,6 +10,32 @@ const TBL_TAG = 'tag';
 const TBL_COMMENT = 'comment';
 
 module.exports = {
+  count : () => db.load(`select count(*) count from ${TBL_POST}`),
+  loadByPage: (offset)=>{
+    return db.load(`select * from ${TBL_POST} limit ${config.pagination} offset ${offset}`)
+  },
+  loadById: (id) => {
+    return db.load(`select p.*, GROUP_CONCAT(pt.tid) tids from ${TBL_POST} p left join ${TBL_POST_TAG} pt on p.id=pt.pid where id=${id}`)
+  },
+  publish: function (id) {
+    const entity = {
+      status:2,
+      postdate: new Date()
+    }
+    return this.patch(entity,id)
+  },
+  increase: (id)=>db.load(`update ${TBL_POST} set views=views+1 where id=${id}`),
+  add: (entity) => {
+    return db.add(TBL_POST,entity)
+  },
+  patch: (entity,id) => {
+    return db.patch(TBL_POST,entity,{id})
+  },
+  del: (id) => db.del(TBL_POST,{id}),
+  setTag: async (entity) => {
+    await db.del(TBL_POST_TAG,{pid:entity[0][0][0]})
+    return db.addMultiple(TBL_POST_TAG+'(pid,tid)',entity)
+  },
   singleDetail: (pid)=>{
     return db.load(`
 select p.title, p.content, p.premium ,p.postdate, p.views, a.pseudonym uname, c.id cid, c.name cname, GROUP_CONCAT(t.id) tids, GROUP_CONCAT(t.name) tnames

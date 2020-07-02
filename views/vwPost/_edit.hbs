@@ -1,0 +1,272 @@
+{{#section 'title'}}Chỉnh sửa bài viết{{/section}}
+{{#section 'css'}}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" />
+{{/section}}
+
+<!-- Page Heading -->
+<h1 class="h3 mb-4 text-gray-800">Chinh sua viet moi</h1>
+
+<div class="row">
+
+  <div class="col-lg-9">
+
+    <!-- Circle Buttons -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Noi dung bai viet</h6>
+      </div>
+
+      <div class="card-body">
+        <div class="form-group">
+          <label>Tieu de bai viet</label>
+          <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-book" aria-hidden="true"></i></span></div>
+            <input id='title' type="text" class="form-control" placeholder="Tieu de bai viet" value='{{postData.title}}'/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Noi dung</label>
+          <textarea id='content'>{{{postData.content}}}</textarea>
+        </div>
+        <div class="form-group">
+          <label>Noi dung tom tat</label>
+          <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-edit" aria-hidden="true"></i></span></div>
+            <input id='abstract' type="text" class="form-control" placeholder='Noi dung tom tat' value='{{postData.abstract}}'/>
+          </div>
+        </div>
+        <form id='frmAvatarUpload' method='post' enctype="multipart/form-data">
+        <div class="form-group mb-2">
+          <label>Hinh anh dai dien</label> <a target='_blank' href='/public/images/post_{{postData.id}}_0.jpg'>Hinh cu</a>
+          <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-file-image-o" aria-hidden="true"></i></span></div>
+            <div class="custom-file">
+              <input type="file" name='file' accept="image/*" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+              <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+            </div>
+          </div>
+        </div>
+        </form>
+      </div>
+      <div class="card-footer">
+        <button onclick='processUpdatePost(this)' class="btn btn-primary mr-2">Cap nhat</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="col-lg-3">
+
+    <!-- Circle Buttons -->
+    <div class="card shadow mb-4 sticky-top">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Tuy chon bai viet</h6>
+      </div>
+      <div class="card-body">
+        <div class="form-group">
+          <label>Chuyen muc</label>
+          <div class="input-group">
+            <select id='category' class="js-category form-control" style="width:100%">
+              {{#each categoryList}}
+              <optgroup label="{{name}}">
+                <option {{#if (isEqual ../postData.cid id)}}selected{{/if}} value="{{@index}}">*{{name}}</option>
+                {{#each group}}
+                <option {{#if (isEqual../../postData.cid id)}}selected{{/if}} value="{{id}}">{{name}}</option>
+                {{/each}}
+              </optgroup>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Tu khoa</label>
+          <div class="input-group">
+            <select id='tag' class="js-tag form-control" multiple style="width:100%">
+              {{#each tagList}}
+              <option 
+              {{#each ../postData.tags}}
+                {{#if (isEqual this ../id)}}selected{{/if}}
+              {{/each}}
+              value="{{id}}">{{name}}</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Tac gia</label>
+          <div class="input-group">
+            <select id='writer' class="js-account form-control" style="width:100%">
+              {{#each writer}}
+              <option {{#if (isEqual ../postData.writeby id)}}selected{{/if}} value="{{id}}">{{pseudonym}}-({{name}})</option>
+              {{/each}}
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Luot xem</label>
+          <div class="input-group">
+            <input id='views' type="text" class="form-control" value='{{postData.views}}'/>
+          </div>
+        </div>
+        <div class="form-group mb-2">
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitch1" {{#if postData.premium}}checked{{/if}}>
+            <label class="custom-control-label" for="customSwitch1">Bai viet Premium</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+</div>
+
+{{#section 'js'}}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
+<script>
+  $('.js-category').select2({
+    theme: 'bootstrap'
+  });
+  $('.js-tag').select2({
+    theme: 'classic'
+  });
+  $('.js-account').select2({
+    theme: 'bootstrap'
+  });
+  window.imagecount = 0
+  tinymce.init({
+      selector: "textarea",
+      height: 600,
+      plugins: "print preview importcss searchreplace  autosave  code visualblocks visualchars fullscreen image link media codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern help quickbars emoticons",
+      toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl",
+      toolbar_sticky: true,
+      toolbar_mode: "sliding",
+      image_advtab: true,
+      autosave_ask_before_unload: true,
+      autosave_interval: "30s",
+      autosave_prefix: "{path}{query}-{id}-",
+      autosave_restore_when_empty: false,
+      autosave_retention: "2m",
+      content_css: "//www.tiny.cloud/css/codepen.min.css",
+      image_title: true,
+      file_picker_types: "image",
+      /* and here's our custom image picker*/
+      file_picker_callback: function(cb, value, meta) {
+        var input = document.createElement("input");
+        input.setAttribute("type", "file");
+        input.setAttribute("accept", "image/*");
+
+        /*
+          Note: In modern browsers input[type="file"] is functional without
+          even adding it to the DOM, but that might not be the case in some older
+          or quirky browsers like IE, so you might want to add it to the DOM
+          just in case, and visually hide it. And do not forget do remove it
+          once you do not need it anymore.
+        */
+
+        input.onchange = function() {
+          var file = this.files[0];
+
+          var reader = new FileReader();
+          reader.onload = function() {
+            /*
+              Note: Now we need to register the blob in TinyMCEs image blob
+              registry. In the next release this part hopefully won't be
+              necessary, as we are looking to handle it internally.
+            */
+            var id = "blobid" + new Date().getTime();
+            var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+            var base64 = reader.result.split(",")[1];
+            var blobInfo = blobCache.create(id, file, base64);
+            blobCache.add(blobInfo);
+
+            /* call the callback and populate the Title field with the file name */
+            cb(blobInfo.blobUri(), {
+              title: file.name
+            });
+          };
+          reader.readAsDataURL(file);
+        };
+
+        input.click();
+      },
+      images_upload_handler: function (blobInfo, success, failure, progress) {
+        var xhr, formData;
+
+        xhr = new XMLHttpRequest();
+        xhr.withCredentials = false;
+        xhr.open('POST', '/dashboard/post/upload?id=' + window.id);
+
+        xhr.upload.onprogress = function (e) {
+          progress(e.loaded / e.total * 100);
+        };
+
+        xhr.onload = function() {
+          var json;
+
+          if (xhr.status < 200 || xhr.status >= 300) {
+            failure('HTTP Error: ' + xhr.status);
+            return;
+          }
+
+          json = JSON.parse(xhr.responseText);
+
+          if (!json || typeof json.location != 'string') {
+            failure('Invalid JSON: ' + xhr.responseText);
+            return;
+          }
+
+          success(json.location);
+        };
+
+        xhr.onerror = function () {
+          failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+        };
+
+        const extension = blobInfo.filename().split('.').pop();
+        const filename = (++window.imagecount)+'.'+extension
+        
+        formData = new FormData();
+        formData.append('file', blobInfo.blob(), filename);
+
+        xhr.send(formData);
+      },
+      automatic_uploads: false,
+      convert_urls: false,
+  });
+  
+  
+  function processUpdatePost(btn){
+    btn.disabled=true
+    let formData = {
+      title: $('#title').val(),
+      abstract: $('#abstract').val(),
+      cid: $('#category').val(),
+      writeby: $('#writer').val(),
+      views: $('#views').val(),
+      premium: +$('#customSwitch1')[0].checked,
+    }
+    $.post('',$.param(formData),function(data, textStatus) {
+      window.id = {{postData.id}}
+      
+      tinymce.activeEditor.uploadImages(function(success) {
+        tinymce.triggerSave()
+        formData = {
+          id: window.id,
+          content: $('#content').val(), 
+          tag: $('#tag').val(),          
+        }
+        $.post('/dashboard/post/updateContent-Tag',$.param(formData),()=>{
+          $('#frmAvatarUpload')[0].action = '/dashboard/post/upload/avatar?id='+window.id
+          $('#frmAvatarUpload').submit()
+        })
+      });
+    }, "json");
+  }
+</script>
+{{/section}}

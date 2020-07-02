@@ -5,6 +5,9 @@ module.exports = {
     add: function (entity) {
         return db.add(TBL_account, entity);
     },
+    getByPermisson: (type)=>{
+      return db.load(`select * from ${TBL_account} where permisson=${type}`)
+    },
     singleByEmail: async function (email) {
         const rows = await db.load(`select * from ${TBL_account} where email = '${email}'`);
         if (rows.length === 0)

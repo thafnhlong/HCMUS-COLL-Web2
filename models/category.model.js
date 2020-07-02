@@ -4,8 +4,24 @@ const config = require('../config/default.json')
 const TBL_CATEGORY = 'category';
 
 module.exports = {
-  all: function () {
-    return db.load(`select * from ${TBL_CATEGORY}`);
+  all: async ()=>{
+    const rows = await db.load(`select * from ${TBL_CATEGORY}`)
+    let data = []
+    rows.forEach(x=>{
+      if (x.parent){
+        parentId = x.parent
+        delete x.parent
+        if (data[parentId] === undefined)
+          data[parentId] = {group:[]}
+        data[parentId].group.push(x)
+        return
+      }
+      if (data[x.id] === undefined)
+        data[x.id]={name:x.name,group:[]}
+      else
+        data[x.id].name = x.name
+    })
+    return data
   },
   add: (entity)=>{
     return db.add(TBL_CATEGORY,entity)

@@ -25,7 +25,7 @@
               <td>{{name}}</td>
               <td>{{pname}}</td>
               <td class='text-right'>
-                <a class="btn btn-sm btn-outline-success" href="./edit/{{id}}" role="button"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                <a class="btn btn-sm btn-outline-success" href="/dashboard/category/edit/{{id}}" role="button"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                 <a class="btn btn-sm btn-outline-danger" onclick='deleteFormSubmit("Chuyên mục",{{id}})' href="#" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
               </td>
             </tr>
@@ -52,6 +52,6 @@
     {{/if}}
   </div>
 </div>
-<form id='frmSend' style='display:none' method='post' action='./delete'>
+<form id='frmSend' style='display:none' method='post' action='/dashboard/category/delete'>
   <input type="text" name="id">
 </form>

@@ -35,7 +35,7 @@ router.use(async function (req, res, next) {
 })
 router.use('/category',require('./_category.route'))
 router.use('/tag',require('./_tag.route'))
-router.use('/post',require('./_post.route'))
+router.use('/post',require('./_post.route').admin_router)
 router.use('/account',require('./_account.route'))
 
 router.use(function (req, res) {

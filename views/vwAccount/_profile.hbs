@@ -15,7 +15,7 @@
       <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Tai khoan</h6>
       </div>
-      <form method='post' class="form" action='./update'>
+      <form method='post' class="form" action='/dashboard/profile/update'>
         <div class="card-body">
           {{#if (isEqual user.permisson 1)}}
           <div class="form-group"><label>Loai tai khoan: </label>
@@ -75,7 +75,7 @@
       <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Doi mat khau</h6>
       </div>
-      <form method='post' class="form" action='./pass'>
+      <form method='post' class="form" action='/dashboard/profile/pass'>
         <div class="card-body">
           <div class="form-group">
             <label>Mat khau cu</label>

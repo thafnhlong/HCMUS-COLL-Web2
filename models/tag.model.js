@@ -4,6 +4,9 @@ const config = require('../config/default.json')
 const TBL_TAG = 'tag';
 
 module.exports = {
+  all: ()=>{
+    return db.load(`select * from ${TBL_TAG}`)
+  },
   add: (entity)=>{
     return db.add(TBL_TAG,entity)
   },

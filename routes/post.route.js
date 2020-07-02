@@ -7,7 +7,7 @@ const commentModel = require('../models/comment.model');
 router.get('/:id', async function (req, res, next) {
   const id = req.params.id
 
-  const [detail,cmtrows] = await Promise.all([postModel.singleDetail(id),commentModel.load(id)])
+  const [detail,cmtrows] = await Promise.all([postModel.singleDetail(id),commentModel.load(id),postModel.increase(id)])
   
   const x = detail[0]
   if (x === undefined)

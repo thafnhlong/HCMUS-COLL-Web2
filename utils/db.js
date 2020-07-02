@@ -54,29 +54,19 @@ module.exports = {
         resolve(results);
       });
     });
-  }
+  },
+  
+  addMultiple: function (table, entity) {
+    return new Promise(function (resolve, reject) {
+      const sql = `insert into ${table} values ?`;
+      pool.query(sql, entity, function (error, results) {
+        if (error) {
+          return reject(error);
+        }
 
-  // load: function (sql, fn_done, fn_fail) {
-  //   pool.query(sql, function (error, results, fields) {
-  //     if (error) {
-  //       return fn_fail(error);
-  //     }
-
-  //     fn_done(results);
-  //   });
-  // },
-
-  // load: function (sql, fn_done, fn_fail) {
-  //   const cn = mysql.createConnection(config.mysql);
-  //   cn.connect();
-  //   cn.query(sql, function (error, results, fields) {
-  //     if (error) {
-  //       cn.end();
-  //       fn_fail(error);
-  //       return;
-  //     }
-  //     fn_done(results);
-  //     cn.end();
-  //   });
-  // }
+        resolve(results);
+      });
+    });
+  },
+  
 };

@@ -58,8 +58,8 @@ router.post('/edit/:id', async function (req, res) {
   res.redirect('back');
 })
 
-router.post('/delete', function (req, res) {
-  categoryModel.del(req.body.id)
+router.post('/delete', async function (req, res) {
+  await categoryModel.del(req.body.id)
   res.redirect('back')
 })
 

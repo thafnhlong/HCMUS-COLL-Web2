@@ -56,8 +56,8 @@ router.post('/edit/:id', async function (req, res) {
   res.redirect('back');
 })
 
-router.post('/delete', function (req, res) {
-  tagModel.del(req.body.id)
+router.post('/delete', async function (req, res) {
+  await tagModel.del(req.body.id)
   res.redirect('back')
 })
 
