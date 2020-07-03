@@ -18,7 +18,9 @@ passport.use(new Strategy({
       var birthdayJSON = {}
       try {
         const response = await axios.get(`https://people.googleapis.com/v1/people/${profile.id}?personFields=birthdays&access_token=${accessToken}`);
-        birthdayJSON = response.data.birthdays[response.data.birthdays.length-1].date;
+        birthdayJSON = response.data.birthdays.find(
+          x=>x.metadata.source.type=='ACCOUNT'
+        ).date;
       } catch (error) {
         return cb(error, null);
       }

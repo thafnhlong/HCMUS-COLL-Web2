@@ -19,7 +19,7 @@ router.get('/list', async function (req, res) {
     page = +req.query.page
   if (page > maxPage)
     page = +maxPage
-  else if (page < 1)
+  if (page < 1)
     page = 1 
   const pv = page > 1
   const nv = page < maxPage 
