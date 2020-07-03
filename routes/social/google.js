@@ -13,7 +13,7 @@ passport.use(new Strategy({
     callbackURL: `${config.site.url}/account/auth/google/callback`,
   },
   async function(accessToken, refreshToken, profile, cb) {
-    var user = await accountModel.singleByEmail(`${profile.id}@fb.com`);
+    var user = await accountModel.singleByEmail(`${profile.id}@google.com`);
     if (!user) {
       var birthdayJSON = {}
       try {
