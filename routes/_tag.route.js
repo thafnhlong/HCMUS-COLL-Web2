@@ -3,6 +3,11 @@ const router = express.Router();
 const config = require('../config/default.json')
 const tagModel = require('../models/tag.model')
 
+router.use(async function (req, res, next) {
+  if (res.locals.user.permisson == 4)
+    return next()
+  res.redirect('/dashboard')
+})
 
 router.get('/add', function (req, res) {
   res.render('vwTag/_add');

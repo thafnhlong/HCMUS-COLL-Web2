@@ -91,6 +91,7 @@
 
           </div>
         </div>
+        {{#if (isEqual user.permisson 4)}}
         <div class="form-group">
           <label>Tac gia</label>
           <div class="input-group">
@@ -101,13 +102,13 @@
             </select>
           </div>
         </div>
-
         <div class="form-group">
           <label>Luot xem</label>
           <div class="input-group">
             <input id='views' type="text" class="form-control" value='0'/>
           </div>
         </div>
+        {{/if}}
         <div class="form-group mb-2">
           <div class="custom-control custom-switch">
             <input type="checkbox" class="custom-control-input" id="customSwitch1">
@@ -244,8 +245,10 @@
       title: $('#title').val(),
       abstract: $('#abstract').val(),
       cid: $('#category').val(),
+      {{#if (isEqual user.permisson 4)}}
       writeby: $('#writer').val(),
       views: $('#views').val(),
+      {{/if}}
       premium: +$('#customSwitch1')[0].checked,
     }
     $.post('',$.param(formData),function(data, textStatus) {

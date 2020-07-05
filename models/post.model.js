@@ -14,6 +14,10 @@ module.exports = {
   loadByPage: (offset)=>{
     return db.load(`select * from ${TBL_POST} limit ${config.pagination} offset ${offset}`)
   },
+  countWith : (status,writeby) => db.load(`select count(*) count from ${TBL_POST} where status=${status} and writeby=${writeby}`),
+  loadByPageWith: (status,writeby,offset)=>{
+    return db.load(`select * from ${TBL_POST} where status=${status} and writeby=${writeby} limit ${config.pagination} offset ${offset}`)
+  },
   loadById: (id) => {
     return db.load(`select p.*, GROUP_CONCAT(pt.tid) tids from ${TBL_POST} p left join ${TBL_POST_TAG} pt on p.id=pt.pid where id=${id}`)
   },
@@ -37,13 +41,14 @@ module.exports = {
     return db.addMultiple(TBL_POST_TAG+'(pid,tid)',entity)
   },
   singleDetail: (pid)=>{
+    const now = db.escape(new Date())
     return db.load(`
 select p.title, p.content, p.premium ,p.postdate, p.views, a.pseudonym uname, c.id cid, c.name cname, GROUP_CONCAT(t.id) tids, GROUP_CONCAT(t.name) tnames
 from ${TBL_POST} p join ${TBL_ACCOUNT} a on p.writeby = a.id
     join ${TBL_CATEGORY} c on p.cid = c.id
     left join ${TBL_POST_TAG} pt on p.id=pt.pid left join ${TBL_TAG} t on pt.tid = t.id 
-where p.id = ${pid}
-group by p.id   
+where p.id = ${pid} and p.status=2 and postdate <= ${now}
+group by p.id
     `)
   }
   ,

@@ -3,6 +3,11 @@ const router = express.Router();
 const config = require('../config/default.json')
 const categoryModel = require('../models/category.model')
 
+router.use(async function (req, res, next) {
+  if (res.locals.user.permisson == 4)
+    return next()
+  res.redirect('/dashboard')
+})
 
 router.get('/add', async function (req, res) {
   parentCategory = await categoryModel.loadParent()

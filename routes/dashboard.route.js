@@ -16,26 +16,17 @@ router.get('/',(req,res) => {
 router.get('/:type/:option*',(req,res,next) => {
   res.locals.navOption = {
     type: req.params.type,
-    option: req.params.option
+    option: req.params.option,
+    suffix: req.params[0]
   }
   next()
 })
 
 
 router.use('/profile',require('./_profile.route'))
-//writer
-
-//editor
-
-//admin
-router.use(async function (req, res, next) {
-  if (res.locals.user.permisson == 4)
-    return next()
-  return res.redirect('/dashboard')
-})
 router.use('/category',require('./_category.route'))
 router.use('/tag',require('./_tag.route'))
-router.use('/post',require('./_post.route').admin_router)
+router.use('/post',require('./_post.route'))
 router.use('/account',require('./_account.route'))
 
 router.use(function (req, res) {

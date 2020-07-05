@@ -3,6 +3,12 @@ const accountmd = require('../models/account.model')
 const router = express.Router();
 const config = require('../config/default.json')
 
+router.use(async function (req, res, next) {
+  if (res.locals.user.permisson == 4)
+    return next()
+  res.redirect('/dashboard')
+})
+
 router.get('/add', function (req, res) {
   
   res.render('vwAccount/_add');
