@@ -46,4 +46,10 @@ module.exports = {
     del: (id) => {
         return db.del(TBL_account, { id })
     },
+    singleByID: async function (id) {
+        const rows = await db.load(`select * from ${TBL_account} where id = '${id}'`);
+        if (rows.length === 0)
+            return null;
+        return rows[0];
+    }
 }
