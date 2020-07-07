@@ -2,36 +2,23 @@ const express = require('express');
 const router = express.Router();
 const postModel = require('../models/post.model');
 const tagModel = require('../models/tag.model');
-const cache = require('../utils/cache');
-const config = require('../config/default.json')
+const pagination = require('../utils/pagination')
 
 
-router.get('/:id/:page', async function (req, res, next) {
-  let page = 1
-  
+router.get('/:id/:page', async function (req, res, next) {  
   const id = req.params.id
-  
-  let [currentTag,postCount] = await Promise.all([
-    tagModel.loadById(id),
-    postModel.getByTagCount(id)
-  ])
-  
+  let [[page,pv,nv],[_,currentTag],rows] = await pagination(req.params.page,
+    () => Promise.all([
+      postModel.getByTagCount(id),
+      tagModel.loadById(id)
+    ]),
+    (offset) => postModel.getByTag(id,offset)
+  )
+ 
   if (currentTag.length===0)
-    return next()
-  
-  postCount=postCount[0].count
-  const maxPage = Math.ceil(+postCount / config.pagination)
-  if (req.params.page)
-    page = +req.params.page
-  if (page > maxPage)
-    page = +maxPage
-  if (page < 1)
-    page = 1 
-  const pv = page > 1
-  const nv = page < maxPage 
-  
-  const rows = await postModel.getByTag(id,(page-1)*config.pagination)
-  
+    return next()  
+  if (page===0)
+    rows=[]
   rows.forEach(x=>{
     if (x.tids === null) {
       x.tag = []

@@ -2,26 +2,32 @@ const db = require('../utils/db');
 const config = require('../config/default.json')
 
 const TBL_CATEGORY = 'category';
+const TBL_MANAGE = 'manage';
+
+const formatCategoryList = object =>{
+  let data = []
+  object.forEach(xori=>{
+    const x= Object.assign({}, xori)
+    if (x.parent){
+      parentId = x.parent
+      delete x.parent
+      if (data[parentId] === undefined)
+        data[parentId] = {group:[]}
+      data[parentId].group.push(x)
+      return
+    }
+    if (data[x.id] === undefined)
+      data[x.id]={name:x.name,group:[]}
+    else
+      data[x.id].name = x.name
+  })
+  return data
+}
 
 module.exports = {
   all: async ()=>{
     const rows = await db.load(`select * from ${TBL_CATEGORY}`)
-    let data = []
-    rows.forEach(xori=>{
-      const x= Object.assign({}, xori)
-      if (x.parent){
-        parentId = x.parent
-        delete x.parent
-        if (data[parentId] === undefined)
-          data[parentId] = {group:[]}
-        data[parentId].group.push(x)
-        return
-      }
-      if (data[x.id] === undefined)
-        data[x.id]={name:x.name,group:[]}
-      else
-        data[x.id].name = x.name
-    })
+    const data = formatCategoryList(rows)
     return [data,rows]
   },
   add: (entity)=>{
@@ -44,5 +50,11 @@ module.exports = {
   },
   count: ()=>{
     return db.load(`select count(*) count from ${TBL_CATEGORY}`)
-  }
+  },
+  loadByEditor: async (uid) => {
+    const rows = await db.load(`select c2.* from ${TBL_MANAGE} m join ${TBL_CATEGORY} c on m.cid = c.id left join ${TBL_CATEGORY} c2 on 
+    (c.id = c2.id or c.id = c2.parent) where uid=${uid}`)
+    const data = formatCategoryList(rows)
+    return [data,rows]
+  },
 };

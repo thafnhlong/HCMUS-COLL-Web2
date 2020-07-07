@@ -90,7 +90,7 @@ INSERT INTO `comment` (`uid`, `pid`, `time`, `content`) VALUES
 
 DROP TABLE IF EXISTS `manage`;
 CREATE TABLE `manage` (
-  `uid` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL,
   `cid` int(11) NOT NULL,
   PRIMARY KEY (`uid`,`cid`),
   KEY `cid` (`cid`),

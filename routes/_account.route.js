@@ -2,6 +2,7 @@ const express = require('express');
 const accountmd = require('../models/account.model')
 const router = express.Router();
 const config = require('../config/default.json')
+const pagination = require('../utils/pagination')
 
 router.use(async function (req, res, next) {
   if (res.locals.user.permisson == 4)
@@ -16,21 +17,9 @@ router.get('/add', function (req, res) {
 
 
 router.get('/list', async function (req, res) {
-  let page = 1
-  
-  let accCount = await accountmd.count()
-  accCount=accCount[0].count
-  const maxPage = Math.ceil(+accCount / config.pagination)
-  if (req.query.page)
-    page = +req.query.page
-  if (page > maxPage)
-    page = +maxPage
-  if (page < 1)
-    page = 1 
-  const pv = page > 1
-  const nv = page < maxPage 
-  
-  const accList = await accountmd.loadByPage((page-1)*config.pagination)
+  const [[page,pv,nv],_,accList] = await pagination(req.query.page,accountmd.count,
+    (offset) => accountmd.loadByPage(offset)
+  )
   
   res.render('vwAccount/_list',{
     accList,

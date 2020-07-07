@@ -6,6 +6,7 @@ const categoryModel = require('../models/category.model')
 const tagModel = require('../models/tag.model')
 const accountModel = require('../models/account.model')
 const upload = require('../utils/upload')
+const pagination = require('../utils/pagination')
 
 const authType = (per) => (req, res, next) => {
   if (per.includes(res.locals.user.permisson))
@@ -14,16 +15,19 @@ const authType = (per) => (req, res, next) => {
 }
 
 router.get('/add', authType([2,4]), async function (req, res) {
+  let writerListFn=1
+  if (res.locals.user.permisson == 4)
+    writerListFn = accountModel.getByPermisson(2)
+  
   const [[categoryList],tagList,writer] = await Promise.all([
     categoryModel.all(),
     tagModel.all(),
-    accountModel.getByPermisson(2)
+    writerListFn
   ])
   res.render('vwPost/_add',{
     categoryList,tagList,writer
   });
 })
-
 router.post('/add', authType([2,4]), async function (req, res) {
   if (res.locals.user.permisson==2){
     req.body.writeby= res.locals.user.id
@@ -36,14 +40,23 @@ router.post('/add', authType([2,4]), async function (req, res) {
   res.json({insertId})
 })
 
-router.post('/updateContent-Tag', authType([2,4]), async (req,res) => {
+router.post('/updateContent-Tag', authType([2,3,4]), async (req,res) => {
   const id = req.body.id
   delete req.body.id
+
+  if (res.locals.user.permisson==3){
+    req.body = {
+      tag: req.body.tag,
+      cid: req.body.cid,
+      status: 2,
+      postdate: new Date(req.body.postdate)
+    }
+  }
   
-  const tag = req.body.tag
+  const tag = req.body.tag   
+  delete req.body.tag
+  
   if (tag){
-    delete req.body.tag
-    
     const pt = tag.map(tid=>{
       return [id,tid]
     })
@@ -55,7 +68,7 @@ router.post('/updateContent-Tag', authType([2,4]), async (req,res) => {
   else 
     await postModel.patch(req.body,id)
   
-  res.send('ok')
+  res.json({status:'ok'})
 })
 
 router.post('/upload', authType([2,4]), async (req,res,next) => {
@@ -73,21 +86,9 @@ router.post('/upload/avatar', authType([2,4]), async (req,res,next) => {
 })
 
 router.get('/list', authType([4]), async function (req, res) {
-  let page = 1
-  
-  let postCount = await postModel.count()
-  postCount=postCount[0].count
-  const maxPage = Math.ceil(+postCount / config.pagination)
-  if (req.query.page)
-    page = +req.query.page
-  if (page > maxPage)
-    page = +maxPage
-  if (page < 1)
-    page = 1 
-  const pv = page > 1
-  const nv = page < maxPage 
-  
-  const postList = await postModel.loadByPage((page-1)*config.pagination)
+  const [[page,pv,nv],_,postList] = await pagination(req.query.page,postModel.count,
+    (offset) => postModel.loadByPage(offset)
+  )
   
   res.render('vwPost/_list',{
     postList,
@@ -98,28 +99,33 @@ router.get('/list', authType([4]), async function (req, res) {
   });
 })
 
-router.get('/list/seen', authType([2]), async function (req, res) {
-  let page = 1
+router.get('/list/:type(seen|unseen|decline)', authType([2]), async function (req, res, next) {
+  let type
+  switch(req.params.type){
+    case 'seen':
+      type = 2
+      break;
+    case 'unseen':
+      type = 1
+      break;
+    case 'decline':
+      type = 0
+      break;
+  }
   
   const uid = res.locals.user.id
-  let postCount = await postModel.countWith(2,uid)
-  postCount=postCount[0].count
-  const maxPage = Math.ceil(+postCount / config.pagination)
-  if (req.query.page)
-    page = +req.query.page
-  if (page > maxPage)
-    page = +maxPage
-  if (page < 1)
-    page = 1 
-  const pv = page > 1
-  const nv = page < maxPage 
+  let [[page,pv,nv],_,postList] = await pagination(req.query.page,
+    ()=> postModel.countWith(type,uid),
+    (offset) => postModel.loadByPageWith(type,uid,offset)
+  )
+  if (page===0)
+    postList = []
+  if (type === 2)
+    postList.forEach(x=>{
+      x.isPublish = x.postdate <= new Date()
+    })
   
-  const postList = await postModel.loadByPageWith(2,uid,(page-1)*config.pagination)
-  postList.forEach(x=>{
-    x.isPublish = x.postdate <= new Date()
-  })
-  
-  res.render('vwPost/list/_seen',{
+  res.render(`vwPost/list/_${req.params.type}`,{
     postList,
     page,
     pag: pv || nv,
@@ -127,113 +133,66 @@ router.get('/list/seen', authType([2]), async function (req, res) {
     next: {isValid:nv,page: page+1},
   });
 })
-router.get('/list/unseen', authType([2]), async function (req, res) {
-  let page = 1
-  
+
+router.get('/list/draft', authType([3]), async function (req, res) {  
   const uid = res.locals.user.id
-  let postCount = await postModel.countWith(1,uid)
-  postCount=postCount[0].count
-  const maxPage = Math.ceil(+postCount / config.pagination)
-  if (req.query.page)
-    page = +req.query.page
-  if (page > maxPage)
-    page = +maxPage
-  if (page < 1)
-    page = 1 
-  const pv = page > 1
-  const nv = page < maxPage 
+  const [[page,pv,nv],[_,[categoryList]],postList] = await pagination(req.query.page,
+    ()=> Promise.all([
+      postModel.countWithEditor(uid),
+      categoryModel.loadByEditor(uid),
+    ]),
+    (offset) => postModel.loadByPageWithEditor(uid,offset)
+  )
   
-  const postList = await postModel.loadByPageWith(1,uid,(page-1)*config.pagination)
-  postList.forEach(x=>{
-    x.isPublish = x.postdate <= new Date()
+  res.render('vwPost/list/_draft',{
+    postList,
+    categoryList,
+    page,
+    pag: pv || nv,
+    prev: {isValid:pv,page: page-1},
+    next: {isValid:nv,page: page+1},
+  });
+})
+router.get('/check/:id', authType([3]), async function (req, res,next) {
+  let [postData,[categoryList,categoryListUnFormat],tagList] = await Promise.all([
+    postModel.loadById(req.params.id),
+    categoryModel.loadByEditor(res.locals.user.id),
+    tagModel.all(),
+  ])
+
+  if (postData.length===0 || postData[0].status != 1 || categoryListUnFormat[postData[0].cid] === undefined )
+    return next()
+  postData = postData[0]
+  if (postData.tids)
+    postData.tags = postData.tids.split(',')
+  
+  res.render('vwPost/_check',{
+    postData,categoryList,tagList
   })
-  
-  res.render('vwPost/list/_unseen',{
-    postList,
-    page,
-    pag: pv || nv,
-    prev: {isValid:pv,page: page-1},
-    next: {isValid:nv,page: page+1},
-  });
 })
-router.get('/list/decline', authType([2]), async function (req, res) {
-  let page = 1
-  
-  const uid = res.locals.user.id
-  let postCount = await postModel.countWith(0,uid)
-  postCount=postCount[0].count
-  const maxPage = Math.ceil(+postCount / config.pagination)
-  if (req.query.page)
-    page = +req.query.page
-  if (page > maxPage)
-    page = +maxPage
-  if (page < 1)
-    page = 1 
-  const pv = page > 1
-  const nv = page < maxPage 
-  
-  const postList = await postModel.loadByPageWith(0,uid,(page-1)*config.pagination)
-  postList.forEach(x=>{
-    x.isPublish = x.postdate <= new Date()
-  })
-  
-  res.render('vwPost/list/_decline',{
-    postList,
-    page,
-    pag: pv || nv,
-    prev: {isValid:pv,page: page-1},
-    next: {isValid:nv,page: page+1},
-  });
+router.post('/decline', authType([3]), async function (req, res) {
+  await postModel.decline(req.body.id,req.body.reason)
+  res.redirect('/dashboard/post/list/draft');
 })
-
-
-
-router.get('/list/draft', authType([3]), async function (req, res) {
-  let page = 1
-  
-  let postCount = await postModel.countWith(1,res.locals.user.id)
-  postCount=postCount[0].count
-  const maxPage = Math.ceil(+postCount / config.pagination)
-  if (req.query.page)
-    page = +req.query.page
-  if (page > maxPage)
-    page = +maxPage
-  if (page < 1)
-    page = 1 
-  const pv = page > 1
-  const nv = page < maxPage 
-  
-  const postList = await postModel.loadByPageWith(1,(page-1)*config.pagination)
-  
-  res.render('vwPost/_list',{
-    postList,
-    page,
-    pag: pv || nv,
-    prev: {isValid:pv,page: page-1},
-    next: {isValid:nv,page: page+1},
-  });
-})
-
-
 
 router.post('/publish', authType([4]), async function (req, res) {
   await postModel.publish(req.body.id)
   res.redirect('back');
 })
 
-router.get('/edit/:id', authType([2,4]), async function (req, res,next) {
-  const id = req.params.id
+router.get('/edit/:id', authType([2,4]), async function (req, res,next) { 
+  let writerListFn=1
+  if (res.locals.user.permisson == 4)
+    writerListFn = accountModel.getByPermisson(2)
   
   let [postData,[categoryList],tagList,writer] = await Promise.all([
-    postModel.loadById(id),
+    postModel.loadById(req.params.id),
     categoryModel.all(),
     tagModel.all(),
-    accountModel.getByPermisson(2)
+    writerListFn
   ])
   
-  if (postData.length===0 || postData[0].writeby != res.locals.user.id
-  || postData[0].status == 2
-  )
+  if (postData.length===0 || (res.locals.user.permisson == 2 && (postData[0].writeby != res.locals.user.id || postData[0].status == 2 )) )
     return next()
   postData = postData[0]
   if (postData.tids)
@@ -243,7 +202,6 @@ router.get('/edit/:id', authType([2,4]), async function (req, res,next) {
     postData,categoryList,tagList,writer
   })
 })
-
 router.post('/edit/:id', authType([2,4]), async function (req, res) {
   await postModel.patch(req.body,req.params.id)
   res.json({status: 'ok'})

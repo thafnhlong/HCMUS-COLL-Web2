@@ -2,12 +2,10 @@ const express = require('express');
 const router = express.Router();
 const postModel = require('../models/post.model');
 const cache = require('../utils/cache');
-const config = require('../config/default.json')
+const pagination = require('../utils/pagination')
 
 
 router.get('/:id/:page', async function (req, res, next) {
-  let page = 1
-  
   const id = req.params.id
   
   const Category_List = 'categoryList'
@@ -15,21 +13,14 @@ router.get('/:id/:page', async function (req, res, next) {
   const currentCategory = data.find(x=>x.id==id)
   if (!currentCategory)
     return next()
-
-  let postCount = await postModel.getByCatCount(id)
-  postCount=postCount[0].count
-  const maxPage = Math.ceil(+postCount / config.pagination)
-  if (req.params.page)
-    page = +req.params.page
-  if (page > maxPage)
-    page = +maxPage
-  if (page < 1)
-    page = 1 
-  const pv = page > 1
-  const nv = page < maxPage 
   
-  const rows = await postModel.getByCat(id,(page-1)*config.pagination)
+  let [[page,pv,nv],_,rows] = await pagination(req.params.page,
+    ()=> postModel.getByCatCount(id),
+    (offset) => postModel.getByCat(id,offset)
+  )
   
+  if (page===0)
+    rows=[]
   rows.forEach(x=>{
     if (x.tids === null) {
       x.tag = []

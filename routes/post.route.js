@@ -7,7 +7,12 @@ const commentModel = require('../models/comment.model');
 router.get('/:id', async function (req, res, next) {
   const id = req.params.id
 
-  const [detail,cmtrows] = await Promise.all([postModel.singleDetail(id),commentModel.load(id),postModel.increase(id)])
+  const [_,detail,cmtrows,relatedPost] = await Promise.all([
+    postModel.increase(id),
+    postModel.singleDetail(id),
+    commentModel.load(id),
+    postModel.getRandomByCategoryOfPost(id)
+  ])
   
   const x = detail[0]
   if (x === undefined)
@@ -24,6 +29,7 @@ router.get('/:id', async function (req, res, next) {
   
   res.render('vwPost/detail',{
       detail: x,
+      relatedPost,
       cmtrows,
       cmtrowslenght: cmtrows.length
   })

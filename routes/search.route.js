@@ -2,27 +2,17 @@ const express = require('express');
 const router = express.Router();
 const postModel = require('../models/post.model');
 const cache = require('../utils/cache');
-const config = require('../config/default.json')
+const pagination = require('../utils/pagination')
 
-router.get('/:keyword/:page', async function (req, res) {
-  let page = 1
-  
+router.get('/:keyword/:page', async function (req, res) { 
   const keyword = req.params.keyword
-  
-  let postCount = await postModel.searchFTSCount(keyword)
-  postCount=postCount[0].count
-  const maxPage = Math.ceil(+postCount / config.pagination)
-  if (req.params.page)
-    page = +req.params.page
-  if (page > maxPage)
-    page = +maxPage
-  if (page < 1)
-    page = 1 
-  const pv = page > 1
-  const nv = page < maxPage 
-  
-  const rows = await postModel.searchFTS(keyword,(page-1)*config.pagination)
-  
+  let [[page,pv,nv],[postCount],rows] = await pagination(req.params.page,
+    ()=> postModel.searchFTSCount(keyword),
+    (offset) => postModel.searchFTS(keyword,offset)
+  )
+  postCount = postCount.count
+  if (page===0)
+    rows=[]
   rows.forEach(x=>{
     if (x.tids === null) {
       x.tag = []

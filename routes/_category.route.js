@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const config = require('../config/default.json')
 const categoryModel = require('../models/category.model')
+const pagination = require('../utils/pagination')
 
 router.use(async function (req, res, next) {
   if (res.locals.user.permisson == 4)
@@ -22,21 +22,9 @@ router.post('/add', async function (req, res) {
 })
 
 router.get('/list', async function (req, res) {
-  let page = 1
-  
-  let tagCount = await categoryModel.count()
-  tagCount=tagCount[0].count
-  const maxPage = Math.ceil(+tagCount / config.pagination)
-  if (req.query.page)
-    page = +req.query.page
-  if (page > maxPage)
-    page = +maxPage
-  if (page < 1)
-    page = 1 
-  const pv = page > 1
-  const nv = page < maxPage 
-  
-  const categoryList = await categoryModel.loadByPage((page-1)*config.pagination)
+  const [[page,pv,nv],_,categoryList] = await pagination(req.query.page,categoryModel.count,
+    (offset) => categoryModel.loadByPage(offset)
+  )
   
   res.render('vwCategory/_list',{
     categoryList,

@@ -1,5 +1,6 @@
 {{#section 'title'}}Chỉnh sửa bài viết{{/section}}
 {{#section 'css'}}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" />
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" />
 {{/section}}
@@ -22,7 +23,7 @@
           <label>Tieu de bai viet</label>
           <div class="input-group">
             <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-book" aria-hidden="true"></i></span></div>
-            <input id='title' type="text" class="form-control" placeholder="Tieu de bai viet" value='{{postData.title}}'/>
+            <input readonly id='title' type="text" class="form-control" placeholder="Tieu de bai viet" value='{{postData.title}}'/>
           </div>
         </div>
         <div class="form-group">
@@ -33,24 +34,21 @@
           <label>Noi dung tom tat</label>
           <div class="input-group">
             <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-edit" aria-hidden="true"></i></span></div>
-            <input id='abstract' type="text" class="form-control" placeholder='Noi dung tom tat' value='{{postData.abstract}}'/>
+            <input readonly id='abstract' type="text" class="form-control" placeholder='Noi dung tom tat' value='{{postData.abstract}}'/>
           </div>
         </div>
         <form id='frmAvatarUpload' method='post' enctype="multipart/form-data">
         <div class="form-group mb-2">
-          <label>Hinh anh dai dien</label> <a target='_blank' href='/public/images/post_{{postData.id}}_0.jpg'>Hinh cu</a>
+          <label>Hinh anh dai dien</label>
           <div class="input-group">
-            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-file-image-o" aria-hidden="true"></i></span></div>
-            <div class="custom-file">
-              <input type="file" name='file' accept="image/*" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-              <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-            </div>
+            <img src="/public/images/post_{{postData.id}}_0.jpg" class="img-fluid">
           </div>
         </div>
         </form>
       </div>
       <div class="card-footer">
-        <button onclick='processUpdatePost(this)' class="btn btn-primary mr-2">Cap nhat</button>
+        <a class="btn btn-outline-success" data-toggle="modal" data-target="#approveModal" href='#' role="button"><i class="fa fa-check" aria-hidden="true"></i> Duyet</a>
+        <a class="btn btn-outline-danger" data-toggle="modal" data-target="#declineModal" href='#' role="button"><i class="fa fa-ban" aria-hidden="true"></i> Tu choi</a>
       </div>
 
     </div>
@@ -94,27 +92,17 @@
             </select>
           </div>
         </div>
-        {{#if (isEqual user.permisson 4)}}
+
         <div class="form-group">
           <label>Tac gia</label>
           <div class="input-group">
-            <select id='writer' class="js-account form-control" style="width:100%">
-              {{#each writer}}
-              <option {{#if (isEqual ../postData.writeby id)}}selected{{/if}} value="{{id}}">{{pseudonym}}-({{name}})</option>
-              {{/each}}
-            </select>
+            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i></span></div>
+            <input readonly type="text" class="form-control" placeholder='Tac gia' value='{{postData.uname}}'/>
           </div>
         </div>
-        <div class="form-group">
-          <label>Luot xem</label>
-          <div class="input-group">
-            <input id='views' type="text" class="form-control" value='{{postData.views}}'/>
-          </div>
-        </div>
-        {{/if}}
         <div class="form-group mb-2">
           <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="customSwitch1" {{#if postData.premium}}checked{{/if}}>
+            <input readonly type="checkbox" class="custom-control-input" id="customSwitch1_" {{#if postData.premium}}checked{{/if}}>
             <label class="custom-control-label" for="customSwitch1">Bai viet Premium</label>
           </div>
         </div>
@@ -126,150 +114,101 @@
 
 </div>
 
+{{#section 'modal'}}
+<div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ban co muon duyet bai viet nay chu?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group mb-2">
+          <label>Thoi gian xuat ban</label>
+          <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o" aria-hidden="true"></i></span></div>
+            <input id="datetimepicker" name='postdate' type="text" class="form-control">
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Dong</button>
+        <button onclick='onApprove(this)' type="button" class="btn btn-primary">Dong y</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ban co muon tu choi bai viet nay chu?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action='/dashboard/post/decline' method='post'>
+        <div class="modal-body">
+          <div class="form-group mb-2">
+            <label>Ly do tu choi</label>
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-question-circle" aria-hidden="true"></i></span></div>
+              <input name='id'value='{{postData.id}}' type="hidden">
+              <input name='reason' type="text" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Dong</button>
+          <button type="submit" class="btn btn-primary">Dong y</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{{/section}}
+
 {{#section 'js'}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
 <script>
+  $('#datetimepicker').datetimepicker({
+    format:'d/m/Y H:i:s',
+    mask:true
+  });
   $('.js-category').select2({
     theme: 'bootstrap'
   });
   $('.js-tag').select2({
     theme: 'classic'
   });
-  $('.js-account').select2({
-    theme: 'bootstrap'
-  });
-  window.imagecount = 0
   tinymce.init({
-      selector: "textarea",
-      height: 600,
-      plugins: "print preview importcss searchreplace  autosave  code visualblocks visualchars fullscreen image link media codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern help quickbars emoticons",
-      toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl",
-      toolbar_sticky: true,
-      toolbar_mode: "sliding",
-      image_advtab: true,
-      autosave_ask_before_unload: true,
-      autosave_interval: "30s",
-      autosave_prefix: "{path}{query}-{id}-",
-      autosave_restore_when_empty: false,
-      autosave_retention: "2m",
-      content_css: "//www.tiny.cloud/css/codepen.min.css",
-      image_title: true,
-      file_picker_types: "image",
-      /* and here's our custom image picker*/
-      file_picker_callback: function(cb, value, meta) {
-        var input = document.createElement("input");
-        input.setAttribute("type", "file");
-        input.setAttribute("accept", "image/*");
-
-        /*
-          Note: In modern browsers input[type="file"] is functional without
-          even adding it to the DOM, but that might not be the case in some older
-          or quirky browsers like IE, so you might want to add it to the DOM
-          just in case, and visually hide it. And do not forget do remove it
-          once you do not need it anymore.
-        */
-
-        input.onchange = function() {
-          var file = this.files[0];
-
-          var reader = new FileReader();
-          reader.onload = function() {
-            /*
-              Note: Now we need to register the blob in TinyMCEs image blob
-              registry. In the next release this part hopefully won't be
-              necessary, as we are looking to handle it internally.
-            */
-            var id = "blobid" + new Date().getTime();
-            var blobCache = tinymce.activeEditor.editorUpload.blobCache;
-            var base64 = reader.result.split(",")[1];
-            var blobInfo = blobCache.create(id, file, base64);
-            blobCache.add(blobInfo);
-
-            /* call the callback and populate the Title field with the file name */
-            cb(blobInfo.blobUri(), {
-              title: file.name
-            });
-          };
-          reader.readAsDataURL(file);
-        };
-
-        input.click();
-      },
-      images_upload_handler: function (blobInfo, success, failure, progress) {
-        var xhr, formData;
-
-        xhr = new XMLHttpRequest();
-        xhr.withCredentials = false;
-        xhr.open('POST', '/dashboard/post/upload?id=' + window.id);
-
-        xhr.upload.onprogress = function (e) {
-          progress(e.loaded / e.total * 100);
-        };
-
-        xhr.onload = function() {
-          var json;
-
-          if (xhr.status < 200 || xhr.status >= 300) {
-            failure('HTTP Error: ' + xhr.status);
-            return;
-          }
-
-          json = JSON.parse(xhr.responseText);
-
-          if (!json || typeof json.location != 'string') {
-            failure('Invalid JSON: ' + xhr.responseText);
-            return;
-          }
-
-          success(json.location);
-        };
-
-        xhr.onerror = function () {
-          failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
-        };
-
-        const extension = blobInfo.filename().split('.').pop();
-        const filename = (++window.imagecount)+'.'+extension
-        
-        formData = new FormData();
-        formData.append('file', blobInfo.blob(), filename);
-
-        xhr.send(formData);
-      },
-      automatic_uploads: false,
-      convert_urls: false,
+    selector:'textarea',
+    height: 600,
+    plugins: 'preview',
+    menubar: false,
+    toolbar: 'preview',
+    init_instance_callback : function(editor)
+    {
+      editor.getBody().setAttribute('contenteditable',false);
+      editor.getBody().style.backgroundColor = "rgb(233, 236, 239)";
+    }
   });
   
-  
-  function processUpdatePost(btn){
+  function onApprove(btn){
     btn.disabled=true
     let formData = {
-      title: $('#title').val(),
-      abstract: $('#abstract').val(),
       cid: $('#category').val(),
-      {{#if (isEqual user.permisson 4)}}
-      writeby: $('#writer').val(),
-      views: $('#views').val(),
-      {{/if}}
-      premium: +$('#customSwitch1')[0].checked,
+      tag: $('#tag').val(),
+      id: {{postData.id}},
+      postdate: $('#datetimepicker').datetimepicker('getValue').toJSON()
     }
-    $.post('',$.param(formData),function(data, textStatus) {
-      window.id = {{postData.id}}
-      
-      tinymce.activeEditor.uploadImages(function(success) {
-        tinymce.triggerSave()
-        formData = {
-          id: window.id,
-          content: $('#content').val(), 
-          tag: $('#tag').val(),          
-        }
-        $.post('/dashboard/post/updateContent-Tag',$.param(formData),()=>{
-          $('#frmAvatarUpload')[0].action = '/dashboard/post/upload/avatar?id='+window.id
-          $('#frmAvatarUpload').submit()
-        })
-      });
-    }, "json");
+    $.post('/dashboard/post/updateContent-Tag',$.param(formData)).done(()=>{
+      location.href = '/dashboard/post/list/draft'
+    })
   }
 </script>
 {{/section}}
