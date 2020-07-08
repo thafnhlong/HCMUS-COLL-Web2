@@ -3,9 +3,9 @@
 {{#each homePostList}}
 <div class='pt-3'>
   <h4 class="block-title"> <span class="title-angle-shap"> {{this.[0]}} </span></h4>
-  <div class="owl-carousel owl-theme py-4">
+  <div class="owl-carousel slide{{#if (isEqual @index 0)}}-one{{/if}} owl-theme py-4">
     {{#each this.[1]}}
-    <div class="item item-before" style="background-image:url(http://demo.themewinter.com/wp/digiqole/covid-19/wp-content/uploads/sites/4/2020/04/image5-600x398.jpg)"> <a class="img-link" href="/post/{{id}}"></a>
+    <div class="item item-before" style="background-image:url(/public/images/post_{{id}}_0.jpg)"> <a class="img-link" href="/post/{{id}}"></a>
       <div class="overlay-post-content">
         <div class="post-content">
           <div class="grid-category"> {{#if premium}}<a class="post-cat" style="background-color:#ff0000;color:#ffffff"> Premium </a> {{/if}}<a class="post-cat" href="/category/{{cid}}" style="background-color:#38a3d7;color:#ffffff"> {{cname}} </a></div>

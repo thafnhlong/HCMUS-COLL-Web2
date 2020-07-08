@@ -35,8 +35,10 @@ router.get('/:id', async function (req, res, next) {
   })
 })
 
-router.post('/:id',async function(req,res){
-    const uid = 1
+router.post('/:id',async function(req,res,next){
+    if (!res.locals.user)
+      return next()
+    const uid = res.locals.user.id
     const pid = req.params.id
     await commentModel.add(uid,pid,req.body.content)
     
