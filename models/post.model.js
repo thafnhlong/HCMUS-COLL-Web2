@@ -1,6 +1,7 @@
 const db = require('../utils/db');
 
 const config = require('../config/default.json')
+const moment = require('moment')
 
 const TBL_POST = 'post';
 const TBL_ACCOUNT = 'account';
@@ -90,7 +91,7 @@ select p.id, p.title, p.premium, p.postdate, p.views, a.pseudonym uname, c.id ci
 from ${TBL_POST} p left join ${TBL_POST_TAG} pt on p.id=pt.pid
     join ${TBL_ACCOUNT} a on p.writeby = a.id 
     left join ${TBL_CATEGORY} c on p.cid=c.id
-where p.status=2 and p.postdate <= ${now} and p.cid != ${pid} and p.cid in 
+where p.status=2 and p.postdate <= ${now} and p.id != ${pid} and p.cid in 
 
 (select c2.id
 from ${TBL_CATEGORY} c left join ${TBL_CATEGORY} c2 on (c.id = c2.parent or c.id=c2.id) 
@@ -102,45 +103,60 @@ limit 5
     `)
   }
   ,
-  mostOutstanding: ()=> {     
-    return db.load(`select p.id, p.premium, p.title,p.views,p.postdate, a.pseudonym uname, c.id cid, c.name cname
-from ${TBL_POST} p join ${TBL_ACCOUNT} a on p.writeby = a.id
-    join ${TBL_CATEGORY} c on p.cid = c.id
-JOIN (select p.id
-from ${TBL_POST} p left join ${TBL_COMMENT} c on p.id = c.pid
-where (p.postdate BETWEEN DATE_SUB(now(),INTERVAL 1 WEEK) AND now() )
-group by p.id
-order by count(c.pid) desc
-limit 4 ) v2 on v2.id = p.id`)
-  },
-  mostViews: ()=>{
+  mostOutstanding: ()=> {  
+    const now = db.escape(new Date())
+    const startWeek = db.escape(moment().startOf('isoWeek').toDate())
     return db.load(`
 select p.id, p.premium, p.title,p.views,p.postdate, a.pseudonym uname, c.id cid, c.name cname
 from ${TBL_POST} p join ${TBL_ACCOUNT} a on p.writeby = a.id
     join ${TBL_CATEGORY} c on p.cid = c.id
+where p.status=2 and p.postdate BETWEEN ${startWeek} AND ${now} 
+order by p.views desc
+limit 4
+    `)
+  },
+  mostViews: ()=>{
+    const now = db.escape(new Date())
+    return db.load(`
+select p.id, p.premium, p.title,p.views,p.postdate, a.pseudonym uname, c.id cid, c.name cname
+from ${TBL_POST} p join ${TBL_ACCOUNT} a on p.writeby = a.id
+    join ${TBL_CATEGORY} c on p.cid = c.id
+where p.postdate <= ${now} and p.status=2
 order by p.views desc
 limit 10
     `)
   },
   newest: ()=> {
+    const now = db.escape(new Date())
     return db.load(`
 select p.id, p.premium, p.title,p.views,p.postdate, a.pseudonym uname, c.id cid, c.name cname
 from ${TBL_POST} p join ${TBL_ACCOUNT} a on p.writeby = a.id
     join ${TBL_CATEGORY} c on p.cid = c.id
+where p.postdate <= ${now} and p.status=2
 order by p.postdate desc
 limit 10
     `)
   },
   newestEachCat: ()=>{
+    const now = db.escape(new Date())
     return db.load(`
 select p.id, p.premium, p.title,p.views,p.postdate, a.pseudonym uname, c.id cid, c.name cname
 from ${TBL_POST} p join ${TBL_ACCOUNT} a on p.writeby = a.id
-    join ${TBL_CATEGORY} c on p.cid = c.id JOIN 
-(select p.id
-from ${TBL_POST} p left join ${TBL_POST} _p on (p.cid = _p.cid and p.postdate < _p.postdate)
-where _p.id is null) p2 on p2.id=p.id
-order by p.postdate desc
-limit 10
+    join ${TBL_CATEGORY} c on p.cid = c.id 
+    join (
+select max(p.id) id
+from ${TBL_POST} p join
+(
+select max(postdate) postdate,cid
+    from ${TBL_POST}
+    where status=2 and postdate <= ${now}
+    group by cid
+    limit 10
+) pc on (p.postdate = pc.postdate and p.cid = pc.cid)
+group by p.cid
+      
+      ) pc on p.id=pc.id
+      
     `)
   },
   

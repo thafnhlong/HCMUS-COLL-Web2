@@ -18,7 +18,21 @@
   </header>
 
   <div class="entry-content clearfix">
+    {{#if detail.premium}}
+      {{#if user}}
+        {{#if user.premium}}
+    <button class="btn btn-lg btn-outline-primary mb-4" onclick="window.print()">IN BÀI BÁO NÀY</button>
     {{{detail.content}}}
+        {{else}}
+    <h1 class="bg-success p-5 text-center">VUI LÒNG NÂNG CẤP TÀI KHOẢN LÊN PREMIUM ĐỂ XEM ĐƯỢC BÀI VIẾT NÀY</h1>
+        {{/if}}
+      {{else}}
+    <h1 class="bg-success p-5 text-center">VUI LÒNG SỬ DỤNG TÀI KHOẢN PREMIUM ĐỂ XEM ĐƯỢC BÀI VIẾT NÀY</h1>
+      {{/if}}
+    {{else}}
+    <button class="btn btn-lg btn-outline-primary mb-4" onclick="window.print()">IN BÀI BÁO NÀY</button>
+    {{{detail.content}}}
+    {{/if}}
     <div class="post-footer clearfix"></div>
   </div>
 
@@ -33,7 +47,7 @@
 <!--RELATED-->
 <div class='pt-3'>
   <h4 class="block-title"> <span class="title-angle-shap"> BÀI VIẾT LIÊN QUAN </span></h4>
-  <div class="owl-carousel owl-theme py-4">
+  <div class="owl-carousel slide owl-theme py-4">
     {{#each relatedPost}}
     <div class="item item-before" style="background-image:url(/public/images/post_{{id}}_0.jpg)"> <a class="img-link" href="/post/{{id}}"></a>
       <div class="overlay-post-content">

@@ -36,8 +36,9 @@ module.exports = function (app) {
         req.session.user = await accountModel.singleByEmail(loginUser.email)
       
       const curUser = req.session.user
-      if (moment(curUser.expired)> moment())
-        curUser.premium = true
+      if (curUser)
+        if (curUser.permisson != 1 || moment(curUser.expired)> moment())
+          curUser.premium = true
       
       res.locals.user = curUser
     }
