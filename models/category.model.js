@@ -30,6 +30,13 @@ module.exports = {
     const data = formatCategoryList(rows)
     return [data,rows]
   },
+  getByEditor: (uid) => db.load(`select cid from ${TBL_MANAGE} where uid=${uid}`),
+  setForEditor: async (entity) => {
+    await db.del(TBL_MANAGE,{uid:entity[0][0][0]})
+    if (entity[0][0][1])
+      return db.addMultiple(TBL_MANAGE+'(uid,cid)',entity)
+    return true
+  },
   add: (entity)=>{
     return db.add(TBL_CATEGORY,entity)
   },

@@ -1,4 +1,7 @@
 {{#section 'title'}}Danh sách tai khoan{{/section}}
+{{#section 'css'}}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+{{/section}}
 
 <!-- Page Heading -->
 <h1 class="h3 mb-4 text-gray-800">Danh sach tai khoan</h1>
@@ -74,3 +77,66 @@
 <form id='frmSend' style='display:none' method='post' action='/dashboard/account/delete'>
     <input type="text" name="id">
 </form>
+
+{{#section 'modal'}}
+<div class="modal fade" id="assignedModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Chia danh muc cho bien tap vien</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form action='/dashboard/account/manage' method='post'>
+        <div class="modal-body">
+          <p>Tai khoan: <span id='name'></span></p>
+          <p>Email: <span id='email'></span></p>
+          <div class="form-group mb-2">
+            <label>Chuyen muc quan ly:</label>
+            <div class="input-group">
+              <input id='id' name='id' type="hidden">
+              <select name='cids' id='categoryList' class="js-category form-control" multiple style="width:100%">
+                {{#each categoryList}}
+                <option value="{{id}}">{{name}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Dong</button>
+          <button type="submit" class="btn btn-primary">Dong y</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{{/section}}
+
+{{#section 'js'}}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script>
+  $('.js-category').select2({
+    theme: 'classic'
+  });
+
+  $('#assignedModal').on('show.bs.modal', function (event) {
+    const button = $(event.relatedTarget) // Button that triggered the modal
+    const recipient = button.parent().parent().children() // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this)
+    modal.find('#categoryList').val([]).trigger('change')
+    modal.find('#id').val(recipient[0].innerText)
+    modal.find('#name').text(recipient[1].innerText)
+    modal.find('#email').text(recipient[2].innerText)
+
+    $.getJSON('/dashboard/account/manage?id='+recipient[0].innerText,result=>{
+        const cids = result.map(x=>x.cid)
+        modal.find('#categoryList').val(cids).trigger('change')
+    })
+  })
+
+</script>
+{{/section}}
