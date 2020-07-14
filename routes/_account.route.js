@@ -26,14 +26,18 @@ router.get('/list', async function (req, res) {
   const pv = page > 1
   const nv = page < maxPage
 
-  const accList = await accountmd.loadByPage((page - 1) * config.pagination)
-
+  let accList = await accountmd.loadByPage((page - 1) * config.pagination)
+  accList = accList.filter(acc => acc.id != +req.session.user.id);
+  for(let i=0;i<accList.length;i++){
+    accList[i].stt=i+1;
+  }
   res.render('vwAccount/_list', {
     accList,
     page,
     pag: pv || nv,
     prev: { isValid: pv, page: page - 1 },
     next: { isValid: nv, page: page + 1 },
+    isUser: +req.session.user.id
   });
 })
 

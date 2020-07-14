@@ -9,7 +9,7 @@
         <!-- Circle Buttons -->
         <div class="card shadow mb-4">
             <div class="card-body">
-                <table class="table table-hover mb-0">
+                <table class="table table-hover mb-0 " id="table">
                     <thead class="">
                         <tr>
                             <th scope="col">#</th>
@@ -22,7 +22,7 @@
                     <tbody>
                         {{#each accList}}
                         <tr>
-                            <th scope="row">{{id}}</th>
+                            <th scope="row">{{stt}}</th>
                             <td>{{name}}</td>
                             <td>{{email}}</td>
                             <td>{{#if (isEqual permisson 4) }} Quản lí
@@ -42,7 +42,7 @@
                                 {{/if}}
                                 <a class="btn btn-sm btn-outline-success" href="/dashboard/account/edit/{{id}}"
                                     role="button"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                                <a class="btn btn-sm btn-outline-danger"  onclick='deleteFormSubmit("Tài khoản",{{id}})'
+                                <a class="btn btn-sm btn-outline-danger" onclick='deleteFormSubmit("Tài khoản",{{id}})'
                                     href="#" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
                             </td>
                         </tr>

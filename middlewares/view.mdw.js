@@ -10,12 +10,12 @@ module.exports = function (app) {
     extname: '.hbs',
     helpers: {
       section: hbs_sections(),
-      isEqual: (a,b) => a==b,
-      formatDate: (date,format) => {return moment(date).format(format)},
-      parseSection: (type,option,object) => {
+      isEqual: (a, b) => a == b,
+      formatDate: (date, format) => { return moment(date).format(format) },
+      parseSection: (type, option, object) => {
         const navOption = object.data.root._locals.navOption
         if (!navOption) return false
-        if (type == navOption.type){
+        if (type == navOption.type) {
           if (option && option != navOption.option)
             return false
           return true

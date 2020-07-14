@@ -1,10 +1,10 @@
 {
   "mysql": {
-    "host": "localhost",
+    "host": "den1.mysql6.gear.host",
     "port": 3306,
-    "user": "root",
-    "password": "",
-    "database": "ltw2",
+    "user": "ltw2remote",
+    "password": "long1@",
+    "database": "ltw2remote",
     "connectionLimit": 50,
     "timezone": "Z"
   },
