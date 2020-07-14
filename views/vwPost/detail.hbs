@@ -14,6 +14,13 @@
       <li class="post-meta-date"> <i class="fa fa-clock-o"></i> {{formatDate detail.postdate 'lll' }}</li>
       <li class="post-comment"><i class="fa fa-comments"></i> {{cmtrowslenght}}</li>
       <li><i class="fa fa-tripadvisor" aria-hidden="true"></i> {{detail.views}}</li>
+      
+      {{#if detail.premium}}{{#if user}}{{#if user.premium}}
+      <li><button class="btn btn-lg btn-outline-primary my-4" onclick="window.print()">IN BÀI BÁO NÀY</button></li>
+        {{/if}}{{/if}}
+      {{else}}
+      <li><button class="btn btn-lg btn-outline-primary my-4" onclick="window.print()">IN BÀI BÁO NÀY</button></li>
+      {{/if}}
     </ul>
   </header>
 
@@ -21,7 +28,6 @@
     {{#if detail.premium}}
       {{#if user}}
         {{#if user.premium}}
-    <button class="btn btn-lg btn-outline-primary mb-4" onclick="window.print()">IN BÀI BÁO NÀY</button>
     {{{detail.content}}}
         {{else}}
     <h1 class="bg-success p-5 text-center">VUI LÒNG NÂNG CẤP TÀI KHOẢN LÊN PREMIUM ĐỂ XEM ĐƯỢC BÀI VIẾT NÀY</h1>
@@ -30,7 +36,6 @@
     <h1 class="bg-success p-5 text-center">VUI LÒNG SỬ DỤNG TÀI KHOẢN PREMIUM ĐỂ XEM ĐƯỢC BÀI VIẾT NÀY</h1>
       {{/if}}
     {{else}}
-    <button class="btn btn-lg btn-outline-primary mb-4" onclick="window.print()">IN BÀI BÁO NÀY</button>
     {{{detail.content}}}
     {{/if}}
     <div class="post-footer clearfix"></div>
