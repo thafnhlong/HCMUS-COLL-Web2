@@ -35,15 +35,22 @@ module.exports = {
     count: () => {
         return db.load(`select count(*) count from ${TBL_account}`)
     },
-    extend: (entity) => {
-        const condition = {
-            id: entity.id,
-            expired: moment(entity.expired, "DD-MM-YYYY").add(5, 'days')
+    extend: async function (id) {
+        const value = await this.singleByID(id)
+        if (!value.expired)
+            value.expired = new Date()
+        const entity = {
+            expired: moment(value.expired).add(7, 'days').toDate()
         }
-        delete entity.id
-        return db.patch(TBL_account, entity, condition);
+        return db.patch(TBL_account, entity, {id});
     },
     del: (id) => {
         return db.del(TBL_account, { id })
     },
+    singleByID: async function (id) {
+        const rows = await db.load(`select * from ${TBL_account} where id = '${id}'`);
+        if (rows.length === 0)
+            return null;
+        return rows[0];
+    }
 }

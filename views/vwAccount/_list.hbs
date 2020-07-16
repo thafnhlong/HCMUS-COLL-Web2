@@ -12,7 +12,7 @@
         <!-- Circle Buttons -->
         <div class="card shadow mb-4">
             <div class="card-body">
-                <table class="table table-hover mb-0">
+                <table class="table table-hover mb-0 " id="table">
                     <thead class="">
                         <tr>
                             <th scope="col">#</th>
@@ -36,17 +36,19 @@
 
                             <td class='text-right'>
                                 {{#if (isEqual permisson 1)}}
-                                <a class="btn btn-sm btn-outline-primary" href="/dashboard/account/{{id}}"
+                                <a class="btn btn-sm btn-outline-primary" href="#" onclick="extendAccount({{id}})"
                                     role="button"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
                                 {{else if (isEqual permisson 3) }}
                                 <a class="btn btn-sm btn-outline-primary" data-toggle="modal"
                                     data-target="#assignedModal" href="#" role="button"><i class="fa fa-tasks"
                                         aria-hidden="true"></i></a>
                                 {{/if}}
-                                <a class="btn btn-sm btn-outline-success" href="/dashboard/account/edit/{{id}}"
+                                <a class="btn btn-sm btn-outline-success" href="/dashboard{{#unless (isEqual ../user.id id)}}/account/edit/{{id}}{{/unless}}"
                                     role="button"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                {{#unless (isEqual ../user.id id)}}
                                 <a class="btn btn-sm btn-outline-danger" onclick='deleteFormSubmit("Tài khoản",{{id}})'
                                     href="#" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                {{/unless}}
                             </td>
                         </tr>
                         {{/each}}
@@ -75,6 +77,9 @@
     </div>
 </div>
 <form id='frmSend' style='display:none' method='post' action='/dashboard/account/delete'>
+    <input type="text" name="id">
+</form>
+<form id='frmExtend' style='display:none' method='post' action='/dashboard/account/extend'>
     <input type="text" name="id">
 </form>
 
@@ -138,5 +143,10 @@
     })
   })
 
+
+  function extendAccount(id){
+    $('#frmExtend').children().eq(0).val(id)
+    $('#frmExtend').submit()
+  }
 </script>
 {{/section}}
