@@ -1,10 +1,11 @@
 {{#section 'title'}}Chỉnh sửa thông tin cá nhân{{/section}}
 {{#section 'css'}}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" />
+<link href="/public/css/sweetalert2.min.css" rel="stylesheet" />
 {{/section}}
 
 <!-- Page Heading -->
-<h1 class="h3 mb-4 text-gray-800">Chinh sua thong tin ca nhan</h1>
+<h1 class="h3 mb-4 text-gray-800">Chỉnh sửa thông tin cá nhân</h1>
 
 <div class="row">
 
@@ -13,12 +14,12 @@
     <!-- Circle Buttons -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Tai khoan</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Tài khoản</h6>
       </div>
-      <form method='post' class="form" action='/dashboard/profile/update'>
+      <form method='post' class="form" id="frmUpdateInformation" action='/dashboard/profile/update'>
         <div class="card-body">
           {{#if (isEqual user.permisson 1)}}
-          <div class="form-group"><label>Loai tai khoan: </label>
+          <div class="form-group"><label>Loại tài khoản: </label>
             {{#if user.premium}}
             <span class="badge badge-success">Premium</span> ({{formatDate user.expired 'HH:mm DD/MM/YYYY' }})
             {{else}}
@@ -27,10 +28,10 @@
           </div>
           {{/if}}
           <div class="form-group">
-            <label>Ho ten</label>
+            <label>Họ tên</label>
             <div class="input-group">
               <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-address-book" aria-hidden="true"></i></span></div>
-              <input name='name' type="text" class="form-control" placeholder="Ho va ten" value='{{user.name}}' />
+              <input name='name' id="txtName" type="text" class="form-control" placeholder="Ho va ten" value='{{user.name}}' />
             </div>
           </div>
           <div class="form-group">
@@ -39,14 +40,14 @@
               <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-envelope" aria-hidden="true"></i></span></div>
               <input readonly class="form-control" placeholder="Email" value='{{user.email}}' />
             </div>
-            <span class="form-text text-muted">Chung toi se khong chia se email cua ban cho ai khac</span>
+            <span class="form-text text-muted">Chúng tôi sẽ không chia sẻ email của bạn cho bất kỳ ai khác</span>
           </div>
           {{#if (isEqual user.permisson 2)}}
           <div class="form-group">
             <label>But danh</label>
             <div class="input-group">
               <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-edit" aria-hidden="true"></i></span></div>
-              <input name='pseudonym' type="text" placeholder="But danh" class="form-control" value='{{user.pseudonym}}'/>
+              <input name='pseudonym' id="txtPseudonym" type="text" placeholder="But danh" class="form-control" value='{{user.pseudonym}}'/>
             </div>
           </div>
           {{/if}}
@@ -59,7 +60,7 @@
           </div>
         </div>
         <div class="card-footer">
-          <button type="submit" class="btn btn-primary mr-2">Cap nhat</button>
+          <button type="submit" class="btn btn-primary mr-2">Cập nhật</button>
           <button type="reset" class="btn btn-secondary">Cancel</button>
         </div>
       </form>
@@ -73,34 +74,34 @@
     <!-- Circle Buttons -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Doi mat khau</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Đổi mật khẩu</h6>
       </div>
-      <form method='post' class="form" action='/dashboard/profile/pass'>
+      <form method='post' id="frmUpdatePass" class="form" action='/dashboard/profile/pass'>
         <div class="card-body">
           <div class="form-group">
-            <label>Mat khau cu</label>
+            <label>Mật khẩu cũ</label>
             <div class="input-group">
               <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></span></div>
-              <input name='password' type="password" class="form-control" />
+              <input name='password' id="txtOldpass" type="password" class="form-control" />
             </div>
           </div>
           <div class="form-group">
-            <label>Mat khau moi</label>
+            <label>Mật khẩu mới</label>
             <div class="input-group">
               <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-key" aria-hidden="true"></i></span></div>
-              <input name='newpassword' type="password" class="form-control" />
+              <input name='newpassword' id="txtNewpass" type="password" class="form-control" />
             </div>
           </div>
           <div class="form-group mb-2">
-            <label>Nhap lai mat khau</label>
+            <label>Nhập lại mật khẩu</label>
             <div class="input-group">
               <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-key" aria-hidden="true"></i></span></div>
-              <input type="password" class="form-control" />
+              <input type="password" id="txtAuthpass" class="form-control" />
             </div>
           </div>
         </div>
         <div class="card-footer">
-          <button type="submit" class="btn btn-primary mr-2">Cap nhat</button>
+          <button type="submit" class="btn btn-primary mr-2">Cập nhật</button>
         </div>
       </form>
       <!--end::Form-->
@@ -112,7 +113,94 @@
 
 {{#section 'js'}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.0/jquery.datetimepicker.full.js"></script>
+<script src="/public/js/sweetalert2.min.js"></script>
 <script>
+  //val-form update thông tin
+  $('#frmUpdateInformation').on('submit', function (e) {
+    const name = $('#txtName').val();
+    const dob=$('#datetimepicker').val();
+    e.preventDefault();
+    if (!name || !dob) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Vui lòng điền đầy đủ thông tin',
+        showConfirmButton: false,
+        timer: 1500,
+        width: 300,
+        customClass: 'swal-height'
+      });
+    }
+    else {
+      $('#frmUpdateInformation').off('submit').submit();
+    }
+  }) 
+  //val-form updatemật khẩu
+  $('#frmUpdatePass').on('submit', function (e) {
+    const oldpass = $('#txtOldpass').val();
+    const newpass=$('#txtNewpass').val();
+    const authpass=$('#txtAuthpass').val();
+    e.preventDefault();
+    if (!oldpass && !newpass && !authpass) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Vui lòng nhập đầy đủ mật khẩu',
+        showConfirmButton: false,
+        timer: 1500,
+        width: 300,
+        customClass: 'swal-height'
+      });
+    }
+    else if(!oldpass){
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Vui lòng nhập mật khẩu cũ',
+        showConfirmButton: false,
+        timer: 1500,
+        width: 300,
+        customClass: 'swal-height'
+      });
+    }
+    else if(!newpass){
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Vui lòng nhập mật khẩu mới',
+        showConfirmButton: false,
+        timer: 1500,
+        width: 300,
+        customClass: 'swal-height'
+      });
+    }
+    else if(!authpass){
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Vui lòng nhập mật khẩu xác nhận',
+        showConfirmButton: false,
+        timer: 1500,
+        width: 300,
+        customClass: 'swal-height'
+      });
+    }
+    else if(newpass != authpass){
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Mật khẩu xác nhận không đúng',
+        showConfirmButton: false,
+        timer: 1500,
+        width: 300,
+        customClass: 'swal-height'
+      });
+    }
+    else {
+      $('#frmUpdatePass').off('submit').submit();
+    }
+  })
+
   jQuery('#datetimepicker').datetimepicker({
     timepicker:false,
     format:'d/m/Y',
