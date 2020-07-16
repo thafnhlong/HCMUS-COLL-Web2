@@ -36,7 +36,7 @@
 
                             <td class='text-right'>
                                 {{#if (isEqual permisson 1)}}
-                                <a class="btn btn-sm btn-outline-primary" href="/dashboard/account/{{id}}"
+                                <a class="btn btn-sm btn-outline-primary" href="#" onclick="extendAccount({{id}})"
                                     role="button"><i class="fa fa-clock-o" aria-hidden="true"></i></a>
                                 {{else if (isEqual permisson 3) }}
                                 <a class="btn btn-sm btn-outline-primary" data-toggle="modal"
@@ -77,6 +77,9 @@
     </div>
 </div>
 <form id='frmSend' style='display:none' method='post' action='/dashboard/account/delete'>
+    <input type="text" name="id">
+</form>
+<form id='frmExtend' style='display:none' method='post' action='/dashboard/account/extend'>
     <input type="text" name="id">
 </form>
 
@@ -140,5 +143,10 @@
     })
   })
 
+
+  function extendAccount(id){
+    $('#frmExtend').children().eq(0).val(id)
+    $('#frmExtend').submit()
+  }
 </script>
 {{/section}}

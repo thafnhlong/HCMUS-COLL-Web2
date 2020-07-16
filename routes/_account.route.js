@@ -66,11 +66,6 @@ router.post('/extend', async function (req, res) {
   res.redirect('back')
 })
 
-router.post('/extend', async function (req, res) {
-  await accountmd.extend(req.body.id)
-  res.redirect('back')
-})
-
 router.post('/delete', async function (req, res) {
   await accountmd.del(req.body.id)
   res.redirect('back')
@@ -86,10 +81,10 @@ router.post('/add', async function (req, res) {
   const password_hash = bcrypt.hashSync(req.body.password, config.authentication.saltRounds);
   account.password = password_hash
 
-  if (req.body.permisson == '1') {
-    account.expired = moment().add(7, 'days').toDate();
+  if (req.body.permission == '1') {
+    account.expired = moment().add(7,'days').toDate();
   }
-  if (req.body.permisson == '2') {
+  if (req.body.permission == '2') {
     account.pseudonym = req.body.pseudonym;
   }
   await accountmd.add(account);
@@ -115,10 +110,7 @@ router.post('/edit',async function (req, res) {
   const password_hash = bcrypt.hashSync(req.body.password, config.authentication.saltRounds);
   account.password = password_hash
 
-  if (req.body.permisson == '1') {
-    account.expired = moment().add(7, 'days').toDate();
-  }
-  if (req.body.permisson == '2') {
+  if (req.body.permission == '2') {
     account.pseudonym = req.body.pseudonym;
   }
   await accountmd.patch(account);

@@ -25,7 +25,7 @@
               </div>
               <input type="text" name="id" hidden value="{{account.id}} ">
               <select class="custom-select" id="inputGroupSelect01"  name="permission">
-                <option value="1" selected>Độc giả</option>
+                <option value="1">Độc giả</option>
                 <option value="2">Nhà báo</option>
                 <option value="3">Biên tập viên</option>
                 <option value="4">Quản lí</option>
@@ -76,7 +76,7 @@
         </div>
         <div class="card-footer">
           <button type="submit" class="btn btn-primary ">Thêm</button>
-          <button type="reset" class="btn btn-secondary">Hủy</button>
+          <button type="reset" class="btn btn-secondary">Phuc hoi</button>
         </div>
       </form>
     </div>
@@ -90,7 +90,8 @@
 <script src="/public/js/sweetalert2.min.js"></script>
 <script>
   jQuery('#datetimepicker').datetimepicker({
-    formatDate: 'd/m/Y',
+    timepicker: false,
+    format: 'd/m/Y',
     mask: false
   });
   $("#inputGroupSelect01").on("change", function () {
@@ -151,6 +152,7 @@
         option.setAttribute("selected", true);
       }
     }
+    $("#inputGroupSelect01").change()
   })
 </script>
 {{/section}}
