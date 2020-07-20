@@ -15,7 +15,7 @@
     <li class="nav-item {{#if (parseSection 'profile' 0)}}active{{/if}}">
       <a class="nav-link" href="/dashboard">
         <i class="fa fa-user" aria-hidden="true"></i>
-        <span>Thong tin ca nhan</span></a>
+        <span>Thông tin cá nhân</span></a>
     </li>
     <hr class="sidebar-divider">
     
@@ -25,25 +25,25 @@
     </div>
     {{else if (isEqual user.permisson 2)}}
     <div class="sidebar-heading">
-      Bai viet
+      Bài viết
     </div>
     
     <li class="nav-item">
       <a class="nav-link" href="/dashboard/post/add">
         <i class="fa fa-paper-plane" aria-hidden="true"></i>
-        <span>Dang bai viet</span></a>
+        <span>Đăng bài viết</span></a>
     </li>
     <li class="nav-item {{#if (parseSection 'post' 'list')}}active{{/if}}">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
         <i class="fa fa-newspaper-o" aria-hidden="true"></i>
-        <span>Danh sach bai viet</span>
+        <span>Danh sách bài viết</span>
       </a>
       <div id="collapseTwo" class="collapse {{#if (parseSection 'post' 'list')}}show{{/if}}" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
-          <h6 class="collapse-header">Loai bai viet:</h6>
-          <a class="collapse-item {{#if (isEqual navOption.suffix '/seen')}}active{{/if}}" href="/dashboard/post/list/seen">Da duyet</a>
-          <a class="collapse-item {{#if (isEqual navOption.suffix '/unseen')}}active{{/if}}" href="/dashboard/post/list/unseen">Chua duyet</a>
-          <a class="collapse-item {{#if (isEqual navOption.suffix '/decline')}}active{{/if}}" href="/dashboard/post/list/decline">Bi tu choi</a>
+          <h6 class="collapse-header">Loại bài viết:</h6>
+          <a class="collapse-item {{#if (isEqual navOption.suffix '/seen')}}active{{/if}}" href="/dashboard/post/list/seen">Đã duyệt</a>
+          <a class="collapse-item {{#if (isEqual navOption.suffix '/unseen')}}active{{/if}}" href="/dashboard/post/list/unseen">Chưa duyệt</a>
+          <a class="collapse-item {{#if (isEqual navOption.suffix '/decline')}}active{{/if}}" href="/dashboard/post/list/decline">Bị từ chối</a>
         </div>
       </div>
     </li>
@@ -51,45 +51,45 @@
     <li class="nav-item active">          
       <a href='' class="nav-link">
         <i class="fa fa-pencil" aria-hidden="true"></i>
-        <span>Hieu chinh bai viet</span></a>
+        <span>Hiệu chỉnh bài viết</span></a>
     </li>
       {{/if}}
     
     {{else if (isEqual user.permisson 3)}}
     <div class="sidebar-heading">
-      Bai viet
+      Bài viết
     </div>
     
     <li class="nav-item {{#if (parseSection 'post' 'list')}}active{{/if}}">
       <a href='/dashboard/post/list/draft' class="nav-link">
         <i class="fa fa-newspaper-o" aria-hidden="true"></i>
-        <span>Danh sach bai viet</span></a>
+        <span>Danh sách bài viết</span></a>
     </li>
       {{#if (parseSection 'post' 'check')}}
     <li class="nav-item active">          
       <a href='' class="nav-link">
         <i class="fa fa-pencil" aria-hidden="true"></i>
-        <span>Hieu chinh bai viet</span></a>
+        <span>Hiệu chỉnh bài viết</span></a>
     </li>
       {{/if}}
     
     {{else}}
     <div class="sidebar-heading">
-      Quan ly
+      Quản lý
     </div>
     
     <li class="nav-item {{#if (parseSection 'category' 0)}}active{{/if}}">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCategory" aria-expanded="false" aria-controls="collapseCategory">
         <i class="fa fa-calendar-o" aria-hidden="true"></i>
-        <span>Chuyen muc</span>
+        <span>Chuyên mục</span>
       </a>
       <div id="collapseCategory" class="collapse {{#if (parseSection 'category' 0)}}show{{/if}}" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
-          <h6 class="collapse-header">Thao tac  :</h6>
-          <a class="collapse-item {{#if (parseSection 'category' 'add')}}active{{/if}}" href="/dashboard/category/add">Them</a>
-          <a class="collapse-item {{#if (parseSection 'category' 'list')}}active{{/if}}" href="/dashboard/category/list">Danh sach</a>
+          <h6 class="collapse-header">Thao tác:</h6>
+          <a class="collapse-item {{#if (parseSection 'category' 'add')}}active{{/if}}" href="/dashboard/category/add">Thêm chuyên mục</a>
+          <a class="collapse-item {{#if (parseSection 'category' 'list')}}active{{/if}}" href="/dashboard/category/list">Danh sách chuyên mục</a>
           {{#if (parseSection 'category' 'edit')}}
-          <a class="collapse-item active" href="">Chinh sua</a>
+          <a class="collapse-item active" href="">Chỉnh sửa chuyên mục</a>
           {{/if}}
         </div>
       </div>
@@ -97,15 +97,15 @@
     <li class="nav-item {{#if (parseSection 'tag' 0)}}active{{/if}}">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTag" aria-expanded="false" aria-controls="collapseTag">
         <i class="fa fa-tags" aria-hidden="true"></i>
-        <span>Tu khoa (Tag)</span>
+        <span>Từ khóa (Tag)</span>
       </a>
       <div id="collapseTag" class="collapse {{#if (parseSection 'tag' 0)}}show{{/if}}" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
-          <h6 class="collapse-header">Thao tac  :</h6>
-          <a class="collapse-item {{#if (parseSection 'tag' 'add')}}active{{/if}}" href="/dashboard/tag/add">Them</a>
-          <a class="collapse-item {{#if (parseSection 'tag' 'list')}}active{{/if}}" href="/dashboard/tag/list">Danh sach</a>
+          <h6 class="collapse-header">Thao tác:</h6>
+          <a class="collapse-item {{#if (parseSection 'tag' 'add')}}active{{/if}}" href="/dashboard/tag/add">Thêm từ khóa (Tag)</a>
+          <a class="collapse-item {{#if (parseSection 'tag' 'list')}}active{{/if}}" href="/dashboard/tag/list">Danh sách từ khóa (Tag)</a>
           {{#if (parseSection 'tag' 'edit')}}
-          <a class="collapse-item active" href="">Chinh sua</a>
+          <a class="collapse-item active" href="">Chỉnh sửa từ khóa (Tag)</a>
           {{/if}}
         </div>
       </div>
@@ -113,15 +113,15 @@
     <li class="nav-item {{#if (parseSection 'post' 0)}}active{{/if}}">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePost" aria-expanded="false" aria-controls="collapsePost">
         <i class="fa fa-newspaper-o" aria-hidden="true"></i>
-        <span>Bai viet</span>
+        <span>Bài viết</span>
       </a>
       <div id="collapsePost" class="collapse {{#if (parseSection 'post' 0)}}show{{/if}}" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
-          <h6 class="collapse-header">Thao tac  :</h6>
-          <a class="collapse-item {{#if (parseSection 'post' 'add')}}active{{/if}}" href="/dashboard/post/add">Them</a>
-          <a class="collapse-item {{#if (parseSection 'post' 'list')}}active{{/if}}" href="/dashboard/post/list">Danh sach</a>
+          <h6 class="collapse-header">Thao tác:</h6>
+          <a class="collapse-item {{#if (parseSection 'post' 'add')}}active{{/if}}" href="/dashboard/post/add">Thêm bài viết</a>
+          <a class="collapse-item {{#if (parseSection 'post' 'list')}}active{{/if}}" href="/dashboard/post/list">Danh sách bài viết</a>
           {{#if (parseSection 'post' 'edit')}}
-          <a class="collapse-item active" href="">Chinh sua</a>
+          <a class="collapse-item active" href="">Chỉnh sửa bài viết</a>
           {{/if}}
         </div>
       </div>
@@ -129,15 +129,15 @@
     <li class="nav-item {{#if (parseSection 'account' 0)}}active{{/if}}">
       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAccount" aria-expanded="false" aria-controls="collapseAccount">
         <i class="fa fa-users" aria-hidden="true"></i>
-        <span>Tai khoan</span>
+        <span>Tài khoản</span>
       </a>
       <div id="collapseAccount" class="collapse {{#if (parseSection 'account' 0)}}show{{/if}}" aria-labelledby="headingTwo" data-parent="#accordionSidebar" style="">
         <div class="bg-white py-2 collapse-inner rounded">
           <h6 class="collapse-header">Thao tac  :</h6>
-          <a class="collapse-item {{#if (parseSection 'account' 'add')}}active{{/if}}" href="/dashboard/account/add">Them</a>
-          <a class="collapse-item {{#if (parseSection 'account' 'list')}}active{{/if}}" href="/dashboard/account/list">Danh sach</a>
+          <a class="collapse-item {{#if (parseSection 'account' 'add')}}active{{/if}}" href="/dashboard/account/add">Thêm tài khoản</a>
+          <a class="collapse-item {{#if (parseSection 'account' 'list')}}active{{/if}}" href="/dashboard/account/list">Danh sách tài khoản</a>
           {{#if (parseSection 'account' 'edit')}}
-          <a class="collapse-item active" href="">Chinh sua</a>
+          <a class="collapse-item active" href="">Chỉnh sửa thông tin</a>
           {{/if}}
         </div>
       </div>

@@ -1,12 +1,14 @@
 {{#section 'title'}}Chỉnh sửa bài viết{{/section}}
 {{#section 'css'}}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" />
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" />
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" />
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" />
 {{/section}}
 
 <!-- Page Heading -->
-<h1 class="h3 mb-4 text-gray-800">Chinh sua viet moi</h1>
+<h1 class="h3 mb-4 text-gray-800">Chỉnh sửa bài viết mới</h1>
 
 <div class="row">
 
@@ -15,40 +17,46 @@
     <!-- Circle Buttons -->
     <div class="card shadow mb-4">
       <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Noi dung bai viet</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Nội dung bài viết</h6>
       </div>
 
       <div class="card-body">
         <div class="form-group">
-          <label>Tieu de bai viet</label>
+          <label>Tiêu đề bài viết</label>
           <div class="input-group">
-            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-book" aria-hidden="true"></i></span></div>
-            <input readonly id='title' type="text" class="form-control" placeholder="Tieu de bai viet" value='{{postData.title}}'/>
+            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-book"
+                  aria-hidden="true"></i></span></div>
+            <input readonly id='title' type="text" class="form-control" placeholder="Tiêu đề bài viết"
+              value='{{postData.title}}' />
           </div>
         </div>
         <div class="form-group">
-          <label>Noi dung</label>
+          <label>Nội dung</label>
           <textarea id='content'>{{{postData.content}}}</textarea>
         </div>
         <div class="form-group">
-          <label>Noi dung tom tat</label>
+          <label>Nội dung tóm tăt</label>
           <div class="input-group">
-            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-edit" aria-hidden="true"></i></span></div>
-            <input readonly id='abstract' type="text" class="form-control" placeholder='Noi dung tom tat' value='{{postData.abstract}}'/>
+            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-edit"
+                  aria-hidden="true"></i></span></div>
+            <input readonly id='abstract' type="text" class="form-control" placeholder='Nội dung tóm tăt'
+              value='{{postData.abstract}}' />
           </div>
         </div>
         <form id='frmAvatarUpload' method='post' enctype="multipart/form-data">
-        <div class="form-group mb-2">
-          <label>Hinh anh dai dien</label>
-          <div class="input-group">
-            <img src="/public/images/post_{{postData.id}}_0.jpg" class="img-fluid">
+          <div class="form-group mb-2">
+            <label>Hình ảnh đại diện</label>
+            <div class="input-group">
+              <img src="/public/images/post_{{postData.id}}_0.jpg" class="img-fluid">
+            </div>
           </div>
-        </div>
         </form>
       </div>
       <div class="card-footer">
-        <a class="btn btn-outline-success" data-toggle="modal" data-target="#approveModal" href='#' role="button"><i class="fa fa-check" aria-hidden="true"></i> Duyet</a>
-        <a class="btn btn-outline-danger" data-toggle="modal" data-target="#declineModal" href='#' role="button"><i class="fa fa-ban" aria-hidden="true"></i> Tu choi</a>
+        <a class="btn btn-outline-success" data-toggle="modal" data-target="#approveModal" href='#' role="button"><i
+            class="fa fa-check" aria-hidden="true"></i> Duyệt</a>
+        <a class="btn btn-outline-danger" data-toggle="modal" data-target="#declineModal" href='#' role="button"><i
+            class="fa fa-ban" aria-hidden="true"></i> Từ chối</a>
       </div>
 
     </div>
@@ -60,11 +68,11 @@
     <!-- Circle Buttons -->
     <div class="card shadow mb-4 sticky-top">
       <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Tuy chon bai viet</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Tùy chọn bài viết</h6>
       </div>
       <div class="card-body">
         <div class="form-group">
-          <label>Chuyen muc</label>
+          <label>Chuyên mục</label>
           <div class="input-group">
             <select id='category' class="js-category form-control" style="width:100%">
               {{#each categoryList}}
@@ -79,31 +87,30 @@
           </div>
         </div>
         <div class="form-group">
-          <label>Tu khoa</label>
+          <label>Từ khóa</label>
           <div class="input-group">
             <select id='tag' class="js-tag form-control" multiple style="width:100%">
               {{#each tagList}}
-              <option 
-              {{#each ../postData.tags}}
-                {{#if (isEqual this ../id)}}selected{{/if}}
-              {{/each}}
-              value="{{id}}">{{name}}</option>
+              <option {{#each ../postData.tags}} {{#if (isEqual this ../id)}}selected{{/if}} {{/each}} value="{{id}}">
+                {{name}}</option>
               {{/each}}
             </select>
           </div>
         </div>
 
         <div class="form-group">
-          <label>Tac gia</label>
+          <label>Tác giả</label>
           <div class="input-group">
-            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i></span></div>
-            <input readonly type="text" class="form-control" placeholder='Tac gia' value='{{postData.uname}}'/>
+            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-user"
+                  aria-hidden="true"></i></span></div>
+            <input readonly type="text" class="form-control" placeholder='Tac gia' value='{{postData.uname}}' />
           </div>
         </div>
         <div class="form-group mb-2">
           <div class="custom-control custom-switch">
-            <input readonly type="checkbox" class="custom-control-input" id="customSwitch1_" {{#if postData.premium}}checked{{/if}}>
-            <label class="custom-control-label" for="customSwitch1">Bai viet Premium</label>
+            <input readonly type="checkbox" class="custom-control-input" id="customSwitch1_"
+              {{#if postData.premium}}checked{{/if}}>
+            <label class="custom-control-label" for="customSwitch1">Bài viết Premium</label>
           </div>
         </div>
       </div>
@@ -115,36 +122,39 @@
 </div>
 
 {{#section 'modal'}}
-<div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="approveModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ban co muon duyet bai viet nay chu?</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Bạn có muốn duyệt bài viết này?</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <div class="form-group mb-2">
-          <label>Thoi gian xuat ban</label>
+          <label>Thời gian xuất bản</label>
           <div class="input-group">
-            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o" aria-hidden="true"></i></span></div>
+            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-clock-o"
+                  aria-hidden="true"></i></span></div>
             <input id="datetimepicker" name='postdate' type="text" class="form-control">
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Dong</button>
-        <button onclick='onApprove(this)' type="button" class="btn btn-primary">Dong y</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+        <button onclick='onApprove(this)' type="button" class="btn btn-primary">Đồng ý</button>
       </div>
     </div>
   </div>
 </div>
-<div class="modal fade" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ban co muon tu choi bai viet nay chu?</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Bạn có muốn từ chối bài viết này?</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -152,17 +162,18 @@
       <form action='/dashboard/post/decline' method='post'>
         <div class="modal-body">
           <div class="form-group mb-2">
-            <label>Ly do tu choi</label>
+            <label>Lý do từ chối</label>
             <div class="input-group">
-              <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-question-circle" aria-hidden="true"></i></span></div>
-              <input name='id'value='{{postData.id}}' type="hidden">
+              <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-question-circle"
+                    aria-hidden="true"></i></span></div>
+              <input name='id' value='{{postData.id}}' type="hidden">
               <input name='reason' type="text" class="form-control">
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Dong</button>
-          <button type="submit" class="btn btn-primary">Dong y</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+          <button type="submit" class="btn btn-primary">Đồng ý</button>
         </div>
       </form>
     </div>
@@ -171,13 +182,14 @@
 {{/section}}
 
 {{#section 'js'}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
 <script>
   $('#datetimepicker').datetimepicker({
-    format:'d/m/Y H:i:s',
-    mask:true
+    format: 'd/m/Y H:i:s',
+    mask: true
   });
   $('.js-category').select2({
     theme: 'bootstrap'
@@ -186,29 +198,29 @@
     theme: 'classic'
   });
   tinymce.init({
-    selector:'textarea',
+    selector: 'textarea',
     height: 600,
     plugins: 'preview',
     menubar: false,
     toolbar: 'preview',
-    init_instance_callback : function(editor)
-    {
-      editor.getBody().setAttribute('contenteditable',false);
+    init_instance_callback: function (editor) {
+      editor.getBody().setAttribute('contenteditable', false);
       editor.getBody().style.backgroundColor = "rgb(233, 236, 239)";
     }
   });
-  
-  function onApprove(btn){
-    btn.disabled=true
+
+  function onApprove(btn) {
+    btn.disabled = true
     let formData = {
       cid: $('#category').val(),
       tag: $('#tag').val(),
-      id: {{postData.id}},
-      postdate: $('#datetimepicker').datetimepicker('getValue').toJSON()
+      id: {{ postData.id }
+  },
+  postdate: $('#datetimepicker').datetimepicker('getValue').toJSON()
     }
-    $.post('/dashboard/post/updateContent-Tag',$.param(formData)).done(()=>{
-      location.href = '/dashboard/post/list/draft'
-    })
+  $.post('/dashboard/post/updateContent-Tag', $.param(formData)).done(() => {
+    location.href = '/dashboard/post/list/draft'
+  })
   }
 </script>
 {{/section}}
