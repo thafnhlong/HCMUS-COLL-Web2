@@ -42,7 +42,7 @@
           <div class="input-group">
             <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-file-image-o" aria-hidden="true"></i></span></div>
             <div class="custom-file">
-              <input type="file" name='file' accept="image/*" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+              <input required type="file" name='file' accept="image/*" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
               <label class="custom-file-label" for="inputGroupFile01">chọn file</label>
             </div>
           </div>
@@ -240,6 +240,8 @@
   
   
   function processNewPost(btn){
+    if (!$('#frmAvatarUpload').get(0).reportValidity())
+      return;
     btn.disabled=true
     let formData = {
       title: $('#title').val(),
