@@ -214,13 +214,12 @@
     let formData = {
       cid: $('#category').val(),
       tag: $('#tag').val(),
-      id: {{ postData.id }
-  },
-  postdate: $('#datetimepicker').datetimepicker('getValue').toJSON()
+      id: {{ postData.id }},
+      postdate: $('#datetimepicker').datetimepicker('getValue').toJSON()
     }
-  $.post('/dashboard/post/updateContent-Tag', $.param(formData)).done(() => {
-    location.href = '/dashboard/post/list/draft'
-  })
+    $.post('/dashboard/post/updateContent-Tag', $.param(formData)).done(() => {
+      location.href = '/dashboard/post/list/draft'
+    })
   }
 </script>
 {{/section}}

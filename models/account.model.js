@@ -37,7 +37,7 @@ module.exports = {
     },
     extend: async function (id) {
         const value = await this.singleByID(id)
-        if (!value.expired)
+        if (!value.expired || value.expired < new Date())
             value.expired = new Date()
         const entity = {
             expired: moment(value.expired).add(7, 'days').toDate()

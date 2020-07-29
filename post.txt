@@ -1,0 +1,7 @@
+A: 	1NW 	2V	1N	2C -> 3CAT
+B: 	1NW 	1V	2N	
+C: 	1NW 	1V	2N	2C -> 1CAT
+D: 	1NW 	1V	1N	1C
+E:  		1V	1N	1C 
+F: 		    2V	1N	2C -> 1CAT
+G:		    2V	2N	2C -> 2CAT

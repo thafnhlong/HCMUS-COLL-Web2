@@ -203,7 +203,8 @@ router.get('/edit/:id', authType([2,4]), async function (req, res,next) {
   })
 })
 router.post('/edit/:id', authType([2,4]), async function (req, res) {
-  req.body.status=1
+  if (res.locals.user.permisson == 2)
+    req.body.status=1
   await postModel.patch(req.body,req.params.id)
   res.json({status: 'ok'})
 })
