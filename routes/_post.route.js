@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const config = require('../config/default.json')
 const postModel = require('../models/post.model')
 const categoryModel = require('../models/category.model')
 const tagModel = require('../models/tag.model')
@@ -75,7 +74,7 @@ router.post('/upload', authType([2,4]), async (req,res,next) => {
   if (!Number.parseInt(req.query.id))
     return next()
   let location = await upload(req,`post_${req.query.id}_`)
-  location = config.site.url+location.substr(1,)
+  location = location.substr(1,)
   res.json({location})
 })
 router.post('/upload/avatar', authType([2,4]), async (req,res,next) => {
