@@ -88,7 +88,7 @@ group by p.id
     const now = db.escape(new Date())
     return db.load(`
 select p.id, p.title, p.premium, p.postdate, p.views, a.pseudonym uname, c.id cid, c.name cname
-from ${TBL_POST} p left join ${TBL_POST_TAG} pt on p.id=pt.pid
+from ${TBL_POST} p
     join ${TBL_ACCOUNT} a on p.writeby = a.id 
     left join ${TBL_CATEGORY} c on p.cid=c.id
 where p.status=2 and p.postdate <= ${now} and p.id != ${pid} and p.cid in 
