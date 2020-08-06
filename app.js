@@ -2,6 +2,9 @@ const express = require('express');
 require('express-async-errors');
 const config = require('./config/default.json')
 
+//TIME ZONE:
+process.env.TZ = "Asia/Ho_Chi_Minh"
+
 const app = express();
 
 app.use(express.urlencoded({

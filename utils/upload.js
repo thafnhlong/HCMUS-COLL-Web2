@@ -18,10 +18,14 @@ module.exports = (req,prefix,isAvatar=0) => {
         
         try {
           await new Promise((reso1,reje1) => {
-            fs.rename(oldpath, newpath, (err) => {
+            fs.copyFile(oldpath, newpath, (err) => {
               if (err)
                 return reje1(err)
-              reso1()
+              fs.unlink(oldpath, (err2) => {
+                if (err2)
+                  return reje1(err2)
+                reso1()
+              })
             })
           })
         } catch(x) {

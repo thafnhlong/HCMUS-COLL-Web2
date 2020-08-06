@@ -24,7 +24,7 @@ module.exports = {
             <span style="padding:10px;background-color:gray;font-size:25px">${verifycode}</span><br><br>
             <span style="color:red">Chú ý: Mã xác thực trên chỉ tồn tại trong 30 phút.</span><br><br>
             Ngoài ra, bạn có thể thay đổi trực tiếp mật khẩu của mình.<br><br>
-            <b><a style="background: #4c649b;padding: 10px;color:white;text-decoration:none" href="${config.site.url}/account/recover?verifycode=${verifycode}">Đổi mật khẩu</a></b><br><br>
+            <b><a style="background: #4c649b;padding: 10px;color:white;text-decoration:none" href="${config.site.url}/account/recover?code=${verifycode}">Đổi mật khẩu</a></b><br><br>
             `, // html body
         });
 
