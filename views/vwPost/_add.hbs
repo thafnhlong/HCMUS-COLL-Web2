@@ -1,7 +1,9 @@
 {{#section 'title'}}Thêm bài viết{{/section}}
 {{#section 'css'}}
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" />
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css" />
+<link href="/public/css/sweetalert2.min.css" rel="stylesheet" />
 {{/section}}
 
 <!-- Page Heading -->
@@ -21,8 +23,9 @@
         <div class="form-group">
           <label>Tiêu đề bài viết</label>
           <div class="input-group">
-            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-book" aria-hidden="true"></i></span></div>
-            <input id='title' type="text" class="form-control" placeholder="Tiêu đề bài viết"/>
+            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-book"
+                  aria-hidden="true"></i></span></div>
+            <input id='title' type="text" class="form-control" placeholder="Tiêu đề bài viết" />
           </div>
         </div>
         <div class="form-group">
@@ -32,25 +35,28 @@
         <div class="form-group">
           <label>Nội dung tóm tắt</label>
           <div class="input-group">
-            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-edit" aria-hidden="true"></i></span></div>
-            <input id='abstract' type="text" class="form-control" placeholder='Nội dung tóm tắt'/>
+            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-edit"
+                  aria-hidden="true"></i></span></div>
+            <input id='abstract' type="text" class="form-control" placeholder='Nội dung tóm tắt' />
           </div>
         </div>
         <form id='frmAvatarUpload' method='post' enctype="multipart/form-data">
-        <div class="form-group mb-2">
-          <label>Hình ảnh đại diện</label>
-          <div class="input-group">
-            <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-file-image-o" aria-hidden="true"></i></span></div>
-            <div class="custom-file">
-              <input required type="file" name='file' accept="image/*" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-              <label class="custom-file-label" for="inputGroupFile01">chọn file</label>
+          <div class="form-group mb-2">
+            <label>Hình ảnh đại diện</label>
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-file-image-o"
+                    aria-hidden="true"></i></span></div>
+              <div class="custom-file">
+                <input required type="file" name='file' accept="image/*" class="custom-file-input" id="inputGroupFile01"
+                  aria-describedby="inputGroupFileAddon01">
+                <label class="custom-file-label" for="inputGroupFile01">chọn file</label>
+              </div>
             </div>
           </div>
-        </div>
         </form>
       </div>
       <div class="card-footer">
-        <button onclick='processNewPost(this)' class="btn btn-primary mr-2">Them</button>
+        <button onclick='processNewPost(this)' class="btn btn-primary mr-2">Thêm</button>
       </div>
 
     </div>
@@ -105,7 +111,7 @@
         <div class="form-group">
           <label>Lượt xem</label>
           <div class="input-group">
-            <input id='views' type="text" class="form-control" value='0'/>
+            <input id='views' type="text" class="form-control" value='0' />
           </div>
         </div>
         {{/if}}
@@ -126,6 +132,9 @@
 {{#section 'js'}}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"></script>
+<script src="/public/js/sweetalert2.min.js"></script>
 <script>
   $('.js-category').select2({
     theme: 'bootstrap'
@@ -138,133 +147,149 @@
   });
   window.imagecount = 0
   tinymce.init({
-      selector: "textarea",
-      height: 600,
-      plugins: "print preview importcss searchreplace  autosave  code visualblocks visualchars fullscreen image link media codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern help quickbars emoticons",
-      toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl",
-      toolbar_sticky: true,
-      toolbar_mode: "sliding",
-      image_advtab: true,
-      autosave_ask_before_unload: true,
-      autosave_interval: "30s",
-      autosave_prefix: "{path}{query}-{id}-",
-      autosave_restore_when_empty: false,
-      autosave_retention: "2m",
-      content_css: "//www.tiny.cloud/css/codepen.min.css",
-      image_title: true,
-      file_picker_types: "image",
-      /* and here's our custom image picker*/
-      file_picker_callback: function(cb, value, meta) {
-        var input = document.createElement("input");
-        input.setAttribute("type", "file");
-        input.setAttribute("accept", "image/*");
+    selector: "textarea",
+    height: 600,
+    plugins: "print preview importcss searchreplace  autosave  code visualblocks visualchars fullscreen image link media codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount textpattern help quickbars emoticons",
+    toolbar: "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl",
+    toolbar_sticky: true,
+    toolbar_mode: "sliding",
+    image_advtab: true,
+    autosave_ask_before_unload: true,
+    autosave_interval: "30s",
+    autosave_prefix: "{path}{query}-{id}-",
+    autosave_restore_when_empty: false,
+    autosave_retention: "2m",
+    content_css: "//www.tiny.cloud/css/codepen.min.css",
+    image_title: true,
+    file_picker_types: "image",
+    /* and here's our custom image picker*/
+    file_picker_callback: function (cb, value, meta) {
+      var input = document.createElement("input");
+      input.setAttribute("type", "file");
+      input.setAttribute("accept", "image/*");
 
-        /*
-          Note: In modern browsers input[type="file"] is functional without
-          even adding it to the DOM, but that might not be the case in some older
-          or quirky browsers like IE, so you might want to add it to the DOM
-          just in case, and visually hide it. And do not forget do remove it
-          once you do not need it anymore.
-        */
+      /*
+        Note: In modern browsers input[type="file"] is functional without
+        even adding it to the DOM, but that might not be the case in some older
+        or quirky browsers like IE, so you might want to add it to the DOM
+        just in case, and visually hide it. And do not forget do remove it
+        once you do not need it anymore.
+      */
 
-        input.onchange = function() {
-          var file = this.files[0];
+      input.onchange = function () {
+        var file = this.files[0];
 
-          var reader = new FileReader();
-          reader.onload = function() {
-            /*
-              Note: Now we need to register the blob in TinyMCEs image blob
-              registry. In the next release this part hopefully won't be
-              necessary, as we are looking to handle it internally.
-            */
-            var id = "blobid" + new Date().getTime();
-            var blobCache = tinymce.activeEditor.editorUpload.blobCache;
-            var base64 = reader.result.split(",")[1];
-            var blobInfo = blobCache.create(id, file, base64);
-            blobCache.add(blobInfo);
+        var reader = new FileReader();
+        reader.onload = function () {
+          /*
+            Note: Now we need to register the blob in TinyMCEs image blob
+            registry. In the next release this part hopefully won't be
+            necessary, as we are looking to handle it internally.
+          */
+          var id = "blobid" + new Date().getTime();
+          var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+          var base64 = reader.result.split(",")[1];
+          var blobInfo = blobCache.create(id, file, base64);
+          blobCache.add(blobInfo);
 
-            /* call the callback and populate the Title field with the file name */
-            cb(blobInfo.blobUri(), {
-              title: file.name
-            });
-          };
-          reader.readAsDataURL(file);
+          /* call the callback and populate the Title field with the file name */
+          cb(blobInfo.blobUri(), {
+            title: file.name
+          });
         };
+        reader.readAsDataURL(file);
+      };
 
-        input.click();
-      },
-      images_upload_handler: function (blobInfo, success, failure, progress) {
-        var xhr, formData;
+      input.click();
+    },
+    images_upload_handler: function (blobInfo, success, failure, progress) {
+      var xhr, formData;
 
-        xhr = new XMLHttpRequest();
-        xhr.withCredentials = false;
-        xhr.open('POST', '/dashboard/post/upload?id=' + window.id);
+      xhr = new XMLHttpRequest();
+      xhr.withCredentials = false;
+      xhr.open('POST', '/dashboard/post/upload?id=' + window.id);
 
-        xhr.upload.onprogress = function (e) {
-          progress(e.loaded / e.total * 100);
-        };
+      xhr.upload.onprogress = function (e) {
+        progress(e.loaded / e.total * 100);
+      };
 
-        xhr.onload = function() {
-          var json;
+      xhr.onload = function () {
+        var json;
 
-          if (xhr.status < 200 || xhr.status >= 300) {
-            failure('HTTP Error: ' + xhr.status);
-            return;
-          }
+        if (xhr.status < 200 || xhr.status >= 300) {
+          failure('HTTP Error: ' + xhr.status);
+          return;
+        }
 
-          json = JSON.parse(xhr.responseText);
+        json = JSON.parse(xhr.responseText);
 
-          if (!json || typeof json.location != 'string') {
-            failure('Invalid JSON: ' + xhr.responseText);
-            return;
-          }
+        if (!json || typeof json.location != 'string') {
+          failure('Invalid JSON: ' + xhr.responseText);
+          return;
+        }
 
-          success(json.location);
-        };
+        success(json.location);
+      };
 
-        xhr.onerror = function () {
-          failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
-        };
+      xhr.onerror = function () {
+        failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+      };
 
-        const extension = blobInfo.filename().split('.').pop();
-        const filename = (++window.imagecount)+'.'+extension
-        
-        formData = new FormData();
-        formData.append('file', blobInfo.blob(), filename);
+      const extension = blobInfo.filename().split('.').pop();
+      const filename = (++window.imagecount) + '.' + extension
 
-        xhr.send(formData);
-      },
-      automatic_uploads: false,
-      convert_urls: false,
+      formData = new FormData();
+      formData.append('file', blobInfo.blob(), filename);
+
+      xhr.send(formData);
+    },
+    automatic_uploads: false,
+    convert_urls: false,
   });
-  
-  
-  function processNewPost(btn){
+
+
+  function processNewPost(btn) {
+    const title = $('#title').val();
+    const abstract = $('#abstract').val();
+    const cid = $('#category').val();
+    if (!title || !abstract || !cid) {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        title: 'Vui lòng điền đầy đủ thông tin trước khi đăng bài',
+        showConfirmButton: false,
+        timer: 1500,
+        width: 300,
+        customClass: 'swal-height'
+      });
+      return;
+    }
     if (!$('#frmAvatarUpload').get(0).reportValidity())
       return;
-    btn.disabled=true
+    btn.disabled = true
     let formData = {
       title: $('#title').val(),
       abstract: $('#abstract').val(),
       cid: $('#category').val(),
-      {{#if (isEqual user.permisson 4)}}
-      writeby: $('#writer').val(),
+      { {#if(isEqual user.permisson 4) } }
+    writeby: $('#writer').val(),
       views: $('#views').val(),
-      {{/if}}
-      premium: +$('#customSwitch1')[0].checked,
+        {{
+      /if}}
+      premium: +$('#customSwitch1')[0].checked,    
     }
-    $.post('',$.param(formData),function(data, textStatus) {
+    $.post('', $.param(formData), function (data, textStatus) {
       window.id = data.insertId
-      
-      tinymce.activeEditor.uploadImages(function(success) {
+
+      tinymce.activeEditor.uploadImages(function (success) {
         tinymce.triggerSave()
         formData = {
           id: window.id,
-          content: $('#content').val(), 
-          tag: $('#tag').val(),          
+          content: $('#content').val(),
+          tag: $('#tag').val(),
         }
-        $.post('/dashboard/post/updateContent-Tag',$.param(formData),()=>{
-          $('#frmAvatarUpload')[0].action = '/dashboard/post/upload/avatar?id='+window.id
+        $.post('/dashboard/post/updateContent-Tag', $.param(formData), () => {
+          $('#frmAvatarUpload')[0].action = '/dashboard/post/upload/avatar?id=' + window.id
           $('#frmAvatarUpload').submit()
         })
       });
