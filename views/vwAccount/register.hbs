@@ -19,9 +19,11 @@
 
     <!-- Icons font CSS-->
     <link href="/public/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        media="all">
     <!-- Font special for pages-->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i"
+        rel="stylesheet">
 
     <!-- Vendor CSS-->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
@@ -38,7 +40,7 @@
                 <div class="card-heading"></div>
                 <div class="card-body">
                     <h2 class="title">Đăng ký </h2>
-                    <form method="POST" id="frmRegister">
+                    <form method="POST" id="frmRegister" >
                         {{#if err}}
                         <div style="margin-bottom: 15px">
                             <span style="color: red;">{{err}}</span>
@@ -56,18 +58,20 @@
                             <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
                         </div>
                         <div class="input-group">
-                            <input class="input--style-3" id="my_input" type="password" placeholder="Mật khẩu" name="password">
-                            <span  toggle="#password" class="zmdi field-icon toggle-password zmdi-eye-off" style="float: right;margin-top: -22px;
+                            <input class="input--style-3" id="my_input" type="password" placeholder="Mật khẩu"
+                                name="password">
+                            <span toggle="#password" class="zmdi field-icon toggle-password zmdi-eye-off" style="float: right;margin-top: -22px;
                             position: relative;z-index: 2;" id="check"></span>
                         </div>
                         <div class="input-group">
-                            <input class="input--style-3"  id="my_input2" type="password" placeholder="Nhập lại mật khẩu" name="cf_password">
-                            <span  toggle="#password" class="zmdi field-icon toggle-password zmdi-eye-off" style="float: right;margin-top: -22px;
+                            <input class="input--style-3" id="my_input2" type="password" placeholder="Nhập lại mật khẩu"
+                                name="cf_password">
+                            <span toggle="#password" class="zmdi field-icon toggle-password zmdi-eye-off" style="float: right;margin-top: -22px;
                             position: relative;z-index: 2;" id="check2"></span>
                         </div>
                         <div class="input-group">
                             <div class="rs-select2 js-select-simple select--no-search">
-                                <select name="permisson" id="permisson" >
+                                <select name="permisson" id="permisson">
                                     <option selected="selected" value="1">Độc giả</option>
                                     <option value="2">Nhà báo</option>
                                     <option value="3">Biên tập viên</option>
@@ -77,9 +81,23 @@
                             </div>
                         </div>
                         <div class="input-group" id="writer">
-                            <input  class="input--style-3" type="text" placeholder="Bí danh nhà báo" name="pseudonym">
+                            <input class="input--style-3" type="text" placeholder="Bí danh nhà báo" name="pseudonym">
                         </div>
-                        <div class="p-t-10">                            
+                        <div><label for="">CAPTCHA</label></div>
+                        <div class="row row-space" style="margin-top: 8px;">
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input class="input--style-3" disabled id="cauhoi" type="text">
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <input class="input--style-3" type="text" placeholder="Vui lòng điền kết quả"
+                                        id="ketqua">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-t-10">
                             <div class="container-login100-form-btn" style="width: 200px;">
                                 <div class="wrap-login100-form-btn">
                                     <div class="login100-form-bgbtn"></div>
@@ -90,8 +108,10 @@
                             </div>
                         </div>
                         <div class="p-t-20">
-                            <a href="/account" class="signup-image-link" style="float:right" >Bạn đã có tài khoản - Đăng nhập ?</a><br>
-                            <a href="/account/forgot-password" class="signup-image-link" style="float: right;margin-top: 20px;color: #666666" >Quên mật khẩu ?</a>
+                            <a href="/account" class="signup-image-link" style="float:right">Bạn đã có tài khoản - Đăng
+                                nhập ?</a><br>
+                            <a href="/account/forgot-password" class="signup-image-link"
+                                style="float: right;margin-top: 20px;color: #666666">Quên mật khẩu ?</a>
                         </div>
                     </form>
                 </div>
@@ -109,8 +129,8 @@
     <!-- Main JS-->
     <script src="/public/js/global.js"></script>
     <script>
-        $(document).ready(function(){
-            if($('#err').val()!=null){
+        $(document).ready(function () {
+            if ($('#err').val() != null) {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'error',
@@ -121,42 +141,66 @@
                     customClass: 'swal-height'
                 });
             }
+            var n1 = Math.round(Math.random() * 10 + 1);
+            var n2 = Math.round(Math.random() * 10 + 1);
+            $('#cauhoi').val(n1 + " + " + n2);
         }),
-        $(function() {  
-            $('#writer').hide(); 
-            $('#permisson').change(function(){
-                if($('#permisson').val() == '2') {
-                    $('#writer').show();   
-                }  
-                else  {
-                    $('#writer').hide();   
-                } 
+            $(function () {
+                $('#writer').hide();
+                $('#permisson').change(function () {
+                    if ($('#permisson').val() == '2') {
+                        $('#writer').show();
+                    }
+                    else {
+                        $('#writer').hide();
+                    }
+                });
             });
+        $("#check").on('click', function () {
+            var x = document.getElementById("my_input");
+            if (x.type === "password") {
+                x.type = "text";
+                $(this).removeClass('zmdi field-icon toggle-password zmdi-eye-off');
+                $(this).addClass('zmdi zmdi-eye field-icon toggle-password');
+            } else {
+                x.type = "password";
+                $(this).removeClass('zmdi zmdi-eye field-icon toggle-password');
+                $(this).addClass('zmdi field-icon toggle-password zmdi-eye-off');
+            }
         });
-        $("#check").on('click',function(){
-          var x = document.getElementById("my_input");
+        $("#check2").on('click', function () {
+            var x = document.getElementById("my_input2");
             if (x.type === "password") {
                 x.type = "text";
-                $(this).removeClass('zmdi field-icon toggle-password zmdi-eye-off');  
-                $(this).addClass('zmdi zmdi-eye field-icon toggle-password');                 
+                $(this).removeClass('zmdi field-icon toggle-password zmdi-eye-off');
+                $(this).addClass('zmdi zmdi-eye field-icon toggle-password');
             } else {
                 x.type = "password";
-                $(this).removeClass('zmdi zmdi-eye field-icon toggle-password');  
-                $(this).addClass('zmdi field-icon toggle-password zmdi-eye-off'); 
+                $(this).removeClass('zmdi zmdi-eye field-icon toggle-password');
+                $(this).addClass('zmdi field-icon toggle-password zmdi-eye-off');
             }
-      });
-      $("#check2").on('click',function(){
-          var x = document.getElementById("my_input2");
-            if (x.type === "password") {
-                x.type = "text";
-                $(this).removeClass('zmdi field-icon toggle-password zmdi-eye-off');  
-                $(this).addClass('zmdi zmdi-eye field-icon toggle-password');                 
-            } else {
-                x.type = "password";
-                $(this).removeClass('zmdi zmdi-eye field-icon toggle-password');  
-                $(this).addClass('zmdi field-icon toggle-password zmdi-eye-off'); 
+        });
+        function validate() {
+            if (eval($('#cauhoi').val()) != $('#ketqua').val()) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Mã Captcha không đúng',
+                    showConfirmButton: false,
+                    timer: 1500,
+                    width: 300,
+                    customClass: 'swal-height'
+                });
             }
-      });
+            else {
+                $('#frmRegister').off('submit').submit();
+            }
+        };
+        // val-from add
+        $('#frmRegister').on('submit', function (e) {
+            e.preventDefault();
+            validate();
+        });
     </script>
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 
